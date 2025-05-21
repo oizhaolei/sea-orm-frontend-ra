@@ -101,6 +101,25 @@ export interface NewCar {
 /**
  * 
  * @export
+ * @interface NewPart
+ */
+export interface NewPart {
+    /**
+     * 
+     * @type {number}
+     * @memberof NewPart
+     */
+    'car_id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof NewPart
+     */
+    'name': string;
+}
+/**
+ * 
+ * @export
  * @interface Part
  */
 export interface Part {
@@ -850,13 +869,13 @@ export const PartsApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * Tries to create a new Part in the database.
          * @summary Create new Part
-         * @param {string} body New Part Information
+         * @param {NewPart} newPart New Part Information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        create: async (body: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'body' is not null or undefined
-            assertParamExists('create', 'body', body)
+        create: async (newPart: NewPart, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'newPart' is not null or undefined
+            assertParamExists('create', 'newPart', newPart)
             const localVarPath = `/api/parts/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -880,7 +899,7 @@ export const PartsApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(newPart, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1054,12 +1073,12 @@ export const PartsApiFp = function(configuration?: Configuration) {
         /**
          * Tries to create a new Part in the database.
          * @summary Create new Part
-         * @param {string} body New Part Information
+         * @param {NewPart} newPart New Part Information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async create(body: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Part>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.create(body, options);
+        async create(newPart: NewPart, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Part>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.create(newPart, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PartsApi.create']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1138,12 +1157,12 @@ export const PartsApiFactory = function (configuration?: Configuration, basePath
         /**
          * Tries to create a new Part in the database.
          * @summary Create new Part
-         * @param {string} body New Part Information
+         * @param {NewPart} newPart New Part Information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        create(body: string, options?: RawAxiosRequestConfig): AxiosPromise<Part> {
-            return localVarFp.create(body, options).then((request) => request(axios, basePath));
+        create(newPart: NewPart, options?: RawAxiosRequestConfig): AxiosPromise<Part> {
+            return localVarFp.create(newPart, options).then((request) => request(axios, basePath));
         },
         /**
          * Tries to all Parts from the database.
@@ -1209,13 +1228,13 @@ export class PartsApi extends BaseAPI {
     /**
      * Tries to create a new Part in the database.
      * @summary Create new Part
-     * @param {string} body New Part Information
+     * @param {NewPart} newPart New Part Information
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PartsApi
      */
-    public create(body: string, options?: RawAxiosRequestConfig) {
-        return PartsApiFp(this.configuration).create(body, options).then((request) => request(this.axios, this.basePath));
+    public create(newPart: NewPart, options?: RawAxiosRequestConfig) {
+        return PartsApiFp(this.configuration).create(newPart, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

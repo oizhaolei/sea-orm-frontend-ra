@@ -1,15 +1,23 @@
 // in src/dataProvider.ts
 import type { DataProvider } from "react-admin";
-import { CarsApiFactory, PartsApiFactory, UsersApiFactory } from "./services";
+import {
+  CarsApiFactory,
+  Configuration,
+  PartsApiFactory,
+  UsersApiFactory,
+} from "./services";
 
 const getResourceFactory = (resource: string) => {
   console.log("resource:", resource);
+  const configuration = new Configuration({
+    accessToken: localStorage.getItem("token") || "",
+  });
   if (resource === "cars") {
-    return CarsApiFactory();
+    return CarsApiFactory(configuration);
   } else if (resource === "parts") {
-    return PartsApiFactory();
+    return PartsApiFactory(configuration);
   } else if (resource === "users") {
-    return UsersApiFactory();
+    return UsersApiFactory(configuration);
   }
   throw new Error("invalid resource");
 };

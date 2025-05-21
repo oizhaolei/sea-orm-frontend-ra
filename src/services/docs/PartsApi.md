@@ -63,7 +63,7 @@ const { status, data } = await apiInstance._delete(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create**
-> Part create(body)
+> Part create(newPart)
 
 Tries to create a new Part in the database.
 
@@ -72,16 +72,17 @@ Tries to create a new Part in the database.
 ```typescript
 import {
     PartsApi,
-    Configuration
+    Configuration,
+    NewPart
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new PartsApi(configuration);
 
-let body: string; //New Part Information
+let newPart: NewPart; //New Part Information
 
 const { status, data } = await apiInstance.create(
-    body
+    newPart
 );
 ```
 
@@ -89,7 +90,7 @@ const { status, data } = await apiInstance.create(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **body** | **string**| New Part Information | |
+| **newPart** | **NewPart**| New Part Information | |
 
 
 ### Return type

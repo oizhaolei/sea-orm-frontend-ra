@@ -5,8 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir:
-      "/Users/leizhao/works/source/rust-axum-sqlx-redis-ws-template/assets",
+    outDir: "../rust-axum-sqlx-redis-ws-template/assets",
     emptyOutDir: true,
   },
 });
