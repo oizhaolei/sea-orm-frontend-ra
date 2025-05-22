@@ -1,23 +1,21 @@
-# User
+# PartList
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **number** |  | [default to undefined]
-**password_hash** | **string** |  | [default to undefined]
-**username** | **string** |  | [default to undefined]
+**data** | [**Array&lt;Part&gt;**](Part.md) |  | [default to undefined]
+**total** | **number** |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { User } from './api';
+import { PartList } from './api';
 
-const instance: User = {
-    id,
-    password_hash,
-    username,
+const instance: PartList = {
+    data,
+    total,
 };
 ```
 

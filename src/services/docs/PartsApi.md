@@ -6,8 +6,7 @@ All URIs are relative to *http://localhost:3000*
 |------------- | ------------- | -------------|
 |[**_delete**](#_delete) | **DELETE** /api/parts/delete/{part_id} | Delete existing Part|
 |[**create**](#create) | **POST** /api/parts/create | Create new Part|
-|[**list**](#list) | **GET** /api/parts/list | List all available Parts|
-|[**search**](#search) | **GET** /api/parts/search | Search all parts|
+|[**list**](#list) | **GET** /api/parts/list | List Parts|
 |[**update**](#update) | **POST** /api/parts/update | Update existing Part|
 |[**view**](#view) | **GET** /api/parts/{part_id} | Get single Part by id|
 
@@ -115,7 +114,7 @@ const { status, data } = await apiInstance.create(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list**
-> Array<Part> list()
+> PartList list()
 
 Tries to all Parts from the database.
 
@@ -130,54 +129,20 @@ import {
 const configuration = new Configuration();
 const apiInstance = new PartsApi(configuration);
 
-const { status, data } = await apiInstance.list();
-```
+let name: string; //Part Name (optional) (default to undefined)
+let ids: string; //ids (optional) (default to undefined)
+let page: number; //Page (optional) (default to undefined)
+let perPage: number; //PerPage (optional) (default to undefined)
+let field: string; //Field (optional) (default to undefined)
+let order: string; //Order (optional) (default to undefined)
 
-### Parameters
-This endpoint does not have any parameters.
-
-
-### Return type
-
-**Array<Part>**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** |  |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **search**
-> Array<Part> search()
-
-Tries to get list of parts by query from the database
-
-### Example
-
-```typescript
-import {
-    PartsApi,
-    Configuration
-} from './api';
-
-const configuration = new Configuration();
-const apiInstance = new PartsApi(configuration);
-
-let name: string; //Part Name (default to undefined)
-
-const { status, data } = await apiInstance.search(
-    name
+const { status, data } = await apiInstance.list(
+    name,
+    ids,
+    page,
+    perPage,
+    field,
+    order
 );
 ```
 
@@ -185,12 +150,17 @@ const { status, data } = await apiInstance.search(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **name** | [**string**] | Part Name | defaults to undefined|
+| **name** | [**string**] | Part Name | (optional) defaults to undefined|
+| **ids** | [**string**] | ids | (optional) defaults to undefined|
+| **page** | [**number**] | Page | (optional) defaults to undefined|
+| **perPage** | [**number**] | PerPage | (optional) defaults to undefined|
+| **field** | [**string**] | Field | (optional) defaults to undefined|
+| **order** | [**string**] | Order | (optional) defaults to undefined|
 
 
 ### Return type
 
-**Array<Part>**
+**PartList**
 
 ### Authorization
 
@@ -262,7 +232,7 @@ const { status, data } = await apiInstance.update(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **view**
-> Array<Part> view()
+> Part view()
 
 Tries to get single part by id from the database
 
@@ -293,7 +263,7 @@ const { status, data } = await apiInstance.view(
 
 ### Return type
 
-**Array<Part>**
+**Part**
 
 ### Authorization
 

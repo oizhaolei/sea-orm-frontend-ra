@@ -6,10 +6,9 @@ All URIs are relative to *http://localhost:3000*
 |------------- | ------------- | -------------|
 |[**_delete**](#_delete) | **DELETE** /api/cars/delete/{car_id} | Delete existing Car|
 |[**create**](#create) | **POST** /api/cars/create | Create new Car|
-|[**list**](#list) | **GET** /api/cars/list | List all available Cars|
-|[**search**](#search) | **GET** /api/cars/search | Search all cars|
+|[**list**](#list) | **GET** /api/cars/list | List Cars|
 |[**update**](#update) | **POST** /api/cars/update | Update existing Car|
-|[**view**](#view) | **GET** /api/cars/{car_id} | Get single Car by id|
+|[**view**](#view) | **GET** /api/cars/{car_id} | |
 
 # **_delete**
 > string _delete()
@@ -115,7 +114,7 @@ const { status, data } = await apiInstance.create(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list**
-> Array<Car> list()
+> CarList list()
 
 Tries to all Cars from the database.
 
@@ -130,54 +129,20 @@ import {
 const configuration = new Configuration();
 const apiInstance = new CarsApi(configuration);
 
-const { status, data } = await apiInstance.list();
-```
+let name: string; //Car Name (optional) (default to undefined)
+let ids: string; //ids (optional) (default to undefined)
+let page: number; //Page (optional) (default to undefined)
+let perPage: number; //PerPage (optional) (default to undefined)
+let field: string; //Field (optional) (default to undefined)
+let order: string; //Order (optional) (default to undefined)
 
-### Parameters
-This endpoint does not have any parameters.
-
-
-### Return type
-
-**Array<Car>**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** |  |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **search**
-> Array<Car> search()
-
-Tries to get list of cars by query from the database
-
-### Example
-
-```typescript
-import {
-    CarsApi,
-    Configuration
-} from './api';
-
-const configuration = new Configuration();
-const apiInstance = new CarsApi(configuration);
-
-let name: string; //Car Name (default to undefined)
-
-const { status, data } = await apiInstance.search(
-    name
+const { status, data } = await apiInstance.list(
+    name,
+    ids,
+    page,
+    perPage,
+    field,
+    order
 );
 ```
 
@@ -185,12 +150,17 @@ const { status, data } = await apiInstance.search(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **name** | [**string**] | Car Name | defaults to undefined|
+| **name** | [**string**] | Car Name | (optional) defaults to undefined|
+| **ids** | [**string**] | ids | (optional) defaults to undefined|
+| **page** | [**number**] | Page | (optional) defaults to undefined|
+| **perPage** | [**number**] | PerPage | (optional) defaults to undefined|
+| **field** | [**string**] | Field | (optional) defaults to undefined|
+| **order** | [**string**] | Order | (optional) defaults to undefined|
 
 
 ### Return type
 
-**Array<Car>**
+**CarList**
 
 ### Authorization
 
@@ -262,7 +232,7 @@ const { status, data } = await apiInstance.update(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **view**
-> Array<Car> view()
+> Car view()
 
 Tries to get single car by id from the database
 
@@ -293,7 +263,7 @@ const { status, data } = await apiInstance.view(
 
 ### Return type
 
-**Array<Car>**
+**Car**
 
 ### Authorization
 

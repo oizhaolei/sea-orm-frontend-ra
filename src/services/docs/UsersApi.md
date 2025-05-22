@@ -6,8 +6,7 @@ All URIs are relative to *http://localhost:3000*
 |------------- | ------------- | -------------|
 |[**_delete**](#_delete) | **DELETE** /api/users/delete/{username} | Delete existing User|
 |[**create**](#create) | **POST** /api/users/create | Create new User|
-|[**list**](#list) | **GET** /api/users/list | List all available Users|
-|[**search**](#search) | **GET** /api/users/search | Search all users|
+|[**list**](#list) | **GET** /api/users/list | List Users|
 |[**update**](#update) | **POST** /api/users/update | Update existing User|
 |[**view**](#view) | **GET** /api/users/{username} | Get single User by username|
 
@@ -115,7 +114,7 @@ const { status, data } = await apiInstance.create(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list**
-> Array<User> list()
+> UserList list()
 
 Tries to all Users from the database.
 
@@ -130,54 +129,20 @@ import {
 const configuration = new Configuration();
 const apiInstance = new UsersApi(configuration);
 
-const { status, data } = await apiInstance.list();
-```
+let name: string; //User Name (optional) (default to undefined)
+let ids: string; //ids (optional) (default to undefined)
+let page: number; //Page (optional) (default to undefined)
+let perPage: number; //PerPage (optional) (default to undefined)
+let field: string; //Field (optional) (default to undefined)
+let order: string; //Order (optional) (default to undefined)
 
-### Parameters
-This endpoint does not have any parameters.
-
-
-### Return type
-
-**Array<User>**
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** |  |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **search**
-> Array<User> search()
-
-Tries to get list of users by query from the database
-
-### Example
-
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
-
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-let username: string; //User Name (default to undefined)
-
-const { status, data } = await apiInstance.search(
-    username
+const { status, data } = await apiInstance.list(
+    name,
+    ids,
+    page,
+    perPage,
+    field,
+    order
 );
 ```
 
@@ -185,16 +150,21 @@ const { status, data } = await apiInstance.search(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **username** | [**string**] | User Name | defaults to undefined|
+| **name** | [**string**] | User Name | (optional) defaults to undefined|
+| **ids** | [**string**] | ids | (optional) defaults to undefined|
+| **page** | [**number**] | Page | (optional) defaults to undefined|
+| **perPage** | [**number**] | PerPage | (optional) defaults to undefined|
+| **field** | [**string**] | Field | (optional) defaults to undefined|
+| **order** | [**string**] | Order | (optional) defaults to undefined|
 
 
 ### Return type
 
-**Array<User>**
+**UserList**
 
 ### Authorization
 
-[bearerAuth](../README.md#bearerAuth)
+No authorization required
 
 ### HTTP request headers
 
@@ -262,7 +232,7 @@ const { status, data } = await apiInstance.update(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **view**
-> Array<User> view()
+> User view()
 
 Tries to get single user by username from the database
 
@@ -293,7 +263,7 @@ const { status, data } = await apiInstance.view(
 
 ### Return type
 
-**Array<User>**
+**User**
 
 ### Authorization
 

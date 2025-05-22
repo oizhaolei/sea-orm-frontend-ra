@@ -1,23 +1,21 @@
-# User
+# CarList
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **number** |  | [default to undefined]
-**password_hash** | **string** |  | [default to undefined]
-**username** | **string** |  | [default to undefined]
+**data** | [**Array&lt;Car&gt;**](Car.md) |  | [default to undefined]
+**total** | **number** |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { User } from './api';
+import { CarList } from './api';
 
-const instance: User = {
-    id,
-    password_hash,
-    username,
+const instance: CarList = {
+    data,
+    total,
 };
 ```
 

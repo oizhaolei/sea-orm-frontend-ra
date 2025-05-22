@@ -76,6 +76,25 @@ export interface Car {
 /**
  * 
  * @export
+ * @interface CarList
+ */
+export interface CarList {
+    /**
+     * 
+     * @type {Array<Car>}
+     * @memberof CarList
+     */
+    'data': Array<Car>;
+    /**
+     * 
+     * @type {number}
+     * @memberof CarList
+     */
+    'total': number;
+}
+/**
+ * 
+ * @export
  * @interface NewCar
  */
 export interface NewCar {
@@ -145,9 +164,34 @@ export interface Part {
 /**
  * 
  * @export
+ * @interface PartList
+ */
+export interface PartList {
+    /**
+     * 
+     * @type {Array<Part>}
+     * @memberof PartList
+     */
+    'data': Array<Part>;
+    /**
+     * 
+     * @type {number}
+     * @memberof PartList
+     */
+    'total': number;
+}
+/**
+ * 
+ * @export
  * @interface User
  */
 export interface User {
+    /**
+     * 
+     * @type {number}
+     * @memberof User
+     */
+    'id': number;
     /**
      * 
      * @type {string}
@@ -179,6 +223,25 @@ export interface UserAuth {
      * @memberof UserAuth
      */
     'username': string;
+}
+/**
+ * 
+ * @export
+ * @interface UserList
+ */
+export interface UserList {
+    /**
+     * 
+     * @type {Array<User>}
+     * @memberof UserList
+     */
+    'data': Array<User>;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserList
+     */
+    'total': number;
 }
 
 /**
@@ -443,45 +506,18 @@ export const CarsApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * Tries to all Cars from the database.
-         * @summary List all available Cars
+         * @summary List Cars
+         * @param {string} [name] Car Name
+         * @param {string} [ids] ids
+         * @param {number} [page] Page
+         * @param {number} [perPage] PerPage
+         * @param {string} [field] Field
+         * @param {string} [order] Order
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        list: async (name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/cars/list`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Tries to get list of cars by query from the database
-         * @summary Search all cars
-         * @param {string} name Car Name
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        search: async (name: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'name' is not null or undefined
-            assertParamExists('search', 'name', name)
-            const localVarPath = `/api/cars/search`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -495,6 +531,26 @@ export const CarsApiAxiosParamCreator = function (configuration?: Configuration)
 
             if (name !== undefined) {
                 localVarQueryParameter['name'] = name;
+            }
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (field !== undefined) {
+                localVarQueryParameter['field'] = field;
+            }
+
+            if (order !== undefined) {
+                localVarQueryParameter['order'] = order;
             }
 
 
@@ -550,7 +606,6 @@ export const CarsApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * Tries to get single car by id from the database
-         * @summary Get single Car by id
          * @param {number} carId Car Id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -620,27 +675,20 @@ export const CarsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Tries to all Cars from the database.
-         * @summary List all available Cars
+         * @summary List Cars
+         * @param {string} [name] Car Name
+         * @param {string} [ids] ids
+         * @param {number} [page] Page
+         * @param {number} [perPage] PerPage
+         * @param {string} [field] Field
+         * @param {string} [order] Order
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async list(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Car>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.list(options);
+        async list(name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CarList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(name, ids, page, perPage, field, order, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CarsApi.list']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Tries to get list of cars by query from the database
-         * @summary Search all cars
-         * @param {string} name Car Name
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async search(name: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Car>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.search(name, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CarsApi.search']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -658,12 +706,11 @@ export const CarsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Tries to get single car by id from the database
-         * @summary Get single Car by id
          * @param {number} carId Car Id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async view(carId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Car>>> {
+        async view(carId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Car>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.view(carId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CarsApi.view']?.[localVarOperationServerIndex]?.url;
@@ -701,22 +748,18 @@ export const CarsApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * Tries to all Cars from the database.
-         * @summary List all available Cars
+         * @summary List Cars
+         * @param {string} [name] Car Name
+         * @param {string} [ids] ids
+         * @param {number} [page] Page
+         * @param {number} [perPage] PerPage
+         * @param {string} [field] Field
+         * @param {string} [order] Order
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list(options?: RawAxiosRequestConfig): AxiosPromise<Array<Car>> {
-            return localVarFp.list(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Tries to get list of cars by query from the database
-         * @summary Search all cars
-         * @param {string} name Car Name
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        search(name: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<Car>> {
-            return localVarFp.search(name, options).then((request) => request(axios, basePath));
+        list(name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options?: RawAxiosRequestConfig): AxiosPromise<CarList> {
+            return localVarFp.list(name, ids, page, perPage, field, order, options).then((request) => request(axios, basePath));
         },
         /**
          * Tries to update a Car in the database.
@@ -730,12 +773,11 @@ export const CarsApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * Tries to get single car by id from the database
-         * @summary Get single Car by id
          * @param {number} carId Car Id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        view(carId: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<Car>> {
+        view(carId: number, options?: RawAxiosRequestConfig): AxiosPromise<Car> {
             return localVarFp.view(carId, options).then((request) => request(axios, basePath));
         },
     };
@@ -774,25 +816,19 @@ export class CarsApi extends BaseAPI {
 
     /**
      * Tries to all Cars from the database.
-     * @summary List all available Cars
+     * @summary List Cars
+     * @param {string} [name] Car Name
+     * @param {string} [ids] ids
+     * @param {number} [page] Page
+     * @param {number} [perPage] PerPage
+     * @param {string} [field] Field
+     * @param {string} [order] Order
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CarsApi
      */
-    public list(options?: RawAxiosRequestConfig) {
-        return CarsApiFp(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Tries to get list of cars by query from the database
-     * @summary Search all cars
-     * @param {string} name Car Name
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CarsApi
-     */
-    public search(name: string, options?: RawAxiosRequestConfig) {
-        return CarsApiFp(this.configuration).search(name, options).then((request) => request(this.axios, this.basePath));
+    public list(name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options?: RawAxiosRequestConfig) {
+        return CarsApiFp(this.configuration).list(name, ids, page, perPage, field, order, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -809,7 +845,6 @@ export class CarsApi extends BaseAPI {
 
     /**
      * Tries to get single car by id from the database
-     * @summary Get single Car by id
      * @param {number} carId Car Id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -908,45 +943,18 @@ export const PartsApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * Tries to all Parts from the database.
-         * @summary List all available Parts
+         * @summary List Parts
+         * @param {string} [name] Part Name
+         * @param {string} [ids] ids
+         * @param {number} [page] Page
+         * @param {number} [perPage] PerPage
+         * @param {string} [field] Field
+         * @param {string} [order] Order
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        list: async (name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/parts/list`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Tries to get list of parts by query from the database
-         * @summary Search all parts
-         * @param {string} name Part Name
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        search: async (name: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'name' is not null or undefined
-            assertParamExists('search', 'name', name)
-            const localVarPath = `/api/parts/search`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -960,6 +968,26 @@ export const PartsApiAxiosParamCreator = function (configuration?: Configuration
 
             if (name !== undefined) {
                 localVarQueryParameter['name'] = name;
+            }
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (field !== undefined) {
+                localVarQueryParameter['field'] = field;
+            }
+
+            if (order !== undefined) {
+                localVarQueryParameter['order'] = order;
             }
 
 
@@ -1085,27 +1113,20 @@ export const PartsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Tries to all Parts from the database.
-         * @summary List all available Parts
+         * @summary List Parts
+         * @param {string} [name] Part Name
+         * @param {string} [ids] ids
+         * @param {number} [page] Page
+         * @param {number} [perPage] PerPage
+         * @param {string} [field] Field
+         * @param {string} [order] Order
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async list(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Part>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.list(options);
+        async list(name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PartList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(name, ids, page, perPage, field, order, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PartsApi.list']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Tries to get list of parts by query from the database
-         * @summary Search all parts
-         * @param {string} name Part Name
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async search(name: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Part>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.search(name, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PartsApi.search']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1128,7 +1149,7 @@ export const PartsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async view(partId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Part>>> {
+        async view(partId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Part>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.view(partId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PartsApi.view']?.[localVarOperationServerIndex]?.url;
@@ -1166,22 +1187,18 @@ export const PartsApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * Tries to all Parts from the database.
-         * @summary List all available Parts
+         * @summary List Parts
+         * @param {string} [name] Part Name
+         * @param {string} [ids] ids
+         * @param {number} [page] Page
+         * @param {number} [perPage] PerPage
+         * @param {string} [field] Field
+         * @param {string} [order] Order
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list(options?: RawAxiosRequestConfig): AxiosPromise<Array<Part>> {
-            return localVarFp.list(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Tries to get list of parts by query from the database
-         * @summary Search all parts
-         * @param {string} name Part Name
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        search(name: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<Part>> {
-            return localVarFp.search(name, options).then((request) => request(axios, basePath));
+        list(name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options?: RawAxiosRequestConfig): AxiosPromise<PartList> {
+            return localVarFp.list(name, ids, page, perPage, field, order, options).then((request) => request(axios, basePath));
         },
         /**
          * Tries to update a Part in the database.
@@ -1200,7 +1217,7 @@ export const PartsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        view(partId: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<Part>> {
+        view(partId: number, options?: RawAxiosRequestConfig): AxiosPromise<Part> {
             return localVarFp.view(partId, options).then((request) => request(axios, basePath));
         },
     };
@@ -1239,25 +1256,19 @@ export class PartsApi extends BaseAPI {
 
     /**
      * Tries to all Parts from the database.
-     * @summary List all available Parts
+     * @summary List Parts
+     * @param {string} [name] Part Name
+     * @param {string} [ids] ids
+     * @param {number} [page] Page
+     * @param {number} [perPage] PerPage
+     * @param {string} [field] Field
+     * @param {string} [order] Order
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PartsApi
      */
-    public list(options?: RawAxiosRequestConfig) {
-        return PartsApiFp(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Tries to get list of parts by query from the database
-     * @summary Search all parts
-     * @param {string} name Part Name
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PartsApi
-     */
-    public search(name: string, options?: RawAxiosRequestConfig) {
-        return PartsApiFp(this.configuration).search(name, options).then((request) => request(this.axios, this.basePath));
+    public list(name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options?: RawAxiosRequestConfig) {
+        return PartsApiFp(this.configuration).list(name, ids, page, perPage, field, order, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1373,11 +1384,17 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * Tries to all Users from the database.
-         * @summary List all available Users
+         * @summary List Users
+         * @param {string} [name] User Name
+         * @param {string} [ids] ids
+         * @param {number} [page] Page
+         * @param {number} [perPage] PerPage
+         * @param {string} [field] Field
+         * @param {string} [order] Order
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        list: async (name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/users/list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1390,49 +1407,28 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Tries to get list of users by query from the database
-         * @summary Search all users
-         * @param {string} username User Name
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        search: async (username: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'username' is not null or undefined
-            assertParamExists('search', 'username', username)
-            const localVarPath = `/api/users/search`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
+            if (name !== undefined) {
+                localVarQueryParameter['name'] = name;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
 
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
 
-            if (username !== undefined) {
-                localVarQueryParameter['username'] = username;
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (field !== undefined) {
+                localVarQueryParameter['field'] = field;
+            }
+
+            if (order !== undefined) {
+                localVarQueryParameter['order'] = order;
             }
 
 
@@ -1562,27 +1558,20 @@ export const UsersApiFp = function(configuration?: Configuration) {
         },
         /**
          * Tries to all Users from the database.
-         * @summary List all available Users
+         * @summary List Users
+         * @param {string} [name] User Name
+         * @param {string} [ids] ids
+         * @param {number} [page] Page
+         * @param {number} [perPage] PerPage
+         * @param {string} [field] Field
+         * @param {string} [order] Order
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async list(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<User>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.list(options);
+        async list(name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(name, ids, page, perPage, field, order, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UsersApi.list']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Tries to get list of users by query from the database
-         * @summary Search all users
-         * @param {string} username User Name
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async search(username: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<User>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.search(username, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UsersApi.search']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1605,7 +1594,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async view(username: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<User>>> {
+        async view(username: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.view(username, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UsersApi.view']?.[localVarOperationServerIndex]?.url;
@@ -1643,22 +1632,18 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * Tries to all Users from the database.
-         * @summary List all available Users
+         * @summary List Users
+         * @param {string} [name] User Name
+         * @param {string} [ids] ids
+         * @param {number} [page] Page
+         * @param {number} [perPage] PerPage
+         * @param {string} [field] Field
+         * @param {string} [order] Order
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list(options?: RawAxiosRequestConfig): AxiosPromise<Array<User>> {
-            return localVarFp.list(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Tries to get list of users by query from the database
-         * @summary Search all users
-         * @param {string} username User Name
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        search(username: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<User>> {
-            return localVarFp.search(username, options).then((request) => request(axios, basePath));
+        list(name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options?: RawAxiosRequestConfig): AxiosPromise<UserList> {
+            return localVarFp.list(name, ids, page, perPage, field, order, options).then((request) => request(axios, basePath));
         },
         /**
          * Tries to update a User in the database.
@@ -1677,7 +1662,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        view(username: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<User>> {
+        view(username: string, options?: RawAxiosRequestConfig): AxiosPromise<User> {
             return localVarFp.view(username, options).then((request) => request(axios, basePath));
         },
     };
@@ -1716,25 +1701,19 @@ export class UsersApi extends BaseAPI {
 
     /**
      * Tries to all Users from the database.
-     * @summary List all available Users
+     * @summary List Users
+     * @param {string} [name] User Name
+     * @param {string} [ids] ids
+     * @param {number} [page] Page
+     * @param {number} [perPage] PerPage
+     * @param {string} [field] Field
+     * @param {string} [order] Order
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public list(options?: RawAxiosRequestConfig) {
-        return UsersApiFp(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Tries to get list of users by query from the database
-     * @summary Search all users
-     * @param {string} username User Name
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public search(username: string, options?: RawAxiosRequestConfig) {
-        return UsersApiFp(this.configuration).search(username, options).then((request) => request(this.axios, this.basePath));
+    public list(name?: string, ids?: string, page?: number, perPage?: number, field?: string, order?: string, options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).list(name, ids, page, perPage, field, order, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

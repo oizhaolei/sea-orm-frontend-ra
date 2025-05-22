@@ -8,7 +8,6 @@ import {
 } from "./services";
 
 const getResourceFactory = (resource: string) => {
-  console.log("resource:", resource);
   const configuration = new Configuration({
     accessToken: localStorage.getItem("token") || "",
   });
@@ -19,15 +18,19 @@ const getResourceFactory = (resource: string) => {
   } else if (resource === "users") {
     return UsersApiFactory(configuration);
   }
-  throw new Error("invalid resource");
+  throw new Error(`invalid resource: ${resource}`);
 };
 export const dataProvider: DataProvider = {
-  getList: async (resource, _params) => {
+  getList: async (resource, params) => {
+    const name = params.filter.name;
+    const ids = undefined;
+    const page = params.pagination?.page;
+    const perPage = params.pagination?.perPage;
     return getResourceFactory(resource)
-      .list()
-      .then(({ data }) => ({
+      .list(name, ids, page, perPage)
+      .then(({ data: { data, total } }) => ({
         data,
-        total: 100,
+        total,
       }));
   },
 
@@ -36,13 +39,15 @@ export const dataProvider: DataProvider = {
   //     data: json,
   //   })),
 
-  // getMany: (resource, params) => {
-  //   const query = {
-  //     filter: JSON.stringify({ id: params.ids }),
-  //   };
-  //   const url = `${apiUrl}/${resource}?${stringify(query)}`;
-  //   return httpClient(url).then(({ json }) => ({ data: json }));
-  // },
+  getMany: (resource, params) => {
+    const name = undefined;
+    const ids = params.ids;
+    return getResourceFactory(resource)
+      .list(name, ids.join())
+      .then(({ data: { data } }) => ({
+        data,
+      }));
+  },
 
   // getManyReference: (resource, params) => {
   //   const { page, perPage } = params.pagination;
