@@ -5,7 +5,7 @@ All URIs are relative to *http://localhost:3000*
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
 |[**authorize**](#authorize) | **POST** /api/auth/authorize | Authorize with username and password|
-|[**test**](#test) | **POST** /api/auth/test | Test Auth|
+|[**profile**](#profile) | **POST** /api/auth/profile | Account profile|
 
 # **authorize**
 > AuthBody authorize(userAuth)
@@ -59,10 +59,10 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **test**
-> string test()
+# **profile**
+> User profile()
 
-Tries to login via a User in the database.
+Current user profile
 
 ### Example
 
@@ -75,7 +75,7 @@ import {
 const configuration = new Configuration();
 const apiInstance = new AuthApi(configuration);
 
-const { status, data } = await apiInstance.test();
+const { status, data } = await apiInstance.profile();
 ```
 
 ### Parameters
@@ -84,7 +84,7 @@ This endpoint does not have any parameters.
 
 ### Return type
 
-**string**
+**User**
 
 ### Authorization
 
@@ -93,13 +93,13 @@ This endpoint does not have any parameters.
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: text/plain
+ - **Accept**: application/json
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | User login successfully |  -  |
+|**200** |  |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

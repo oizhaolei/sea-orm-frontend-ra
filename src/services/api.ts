@@ -287,13 +287,13 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Tries to login via a User in the database.
-         * @summary Test Auth
+         * Current user profile
+         * @summary Account profile
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        test: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/auth/test`;
+        profile: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/auth/profile`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -344,15 +344,15 @@ export const AuthApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Tries to login via a User in the database.
-         * @summary Test Auth
+         * Current user profile
+         * @summary Account profile
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async test(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.test(options);
+        async profile(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.profile(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AuthApi.test']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.profile']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -376,13 +376,13 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
             return localVarFp.authorize(userAuth, options).then((request) => request(axios, basePath));
         },
         /**
-         * Tries to login via a User in the database.
-         * @summary Test Auth
+         * Current user profile
+         * @summary Account profile
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        test(options?: RawAxiosRequestConfig): AxiosPromise<string> {
-            return localVarFp.test(options).then((request) => request(axios, basePath));
+        profile(options?: RawAxiosRequestConfig): AxiosPromise<User> {
+            return localVarFp.profile(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -407,14 +407,14 @@ export class AuthApi extends BaseAPI {
     }
 
     /**
-     * Tries to login via a User in the database.
-     * @summary Test Auth
+     * Current user profile
+     * @summary Account profile
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public test(options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).test(options).then((request) => request(this.axios, this.basePath));
+    public profile(options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).profile(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
