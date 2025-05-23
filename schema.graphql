@@ -1,0 +1,1242 @@
+# Indicates that an Input Object is a OneOf Input Object (and thus requires
+#                         exactly one of its field be provided)
+directive @oneOf on INPUT_OBJECT
+
+type Address {
+  address_id: Int!
+  address_line1: String!
+  address_line2: String
+  city: String!
+  state_province: String!
+  country_region: String!
+  postal_code: String!
+  rowguid: String!
+  created_date: String!
+  customer_address(
+    filters: CustomerAddressFilterInput
+    order_by: CustomerAddressOrderInput
+    pagination: PaginationInput
+  ): CustomerAddressConnection!
+  customer(
+    filters: CustomerFilterInput
+    order_by: CustomerOrderInput
+    pagination: PaginationInput
+  ): CustomerConnection!
+}
+
+type AddressBasic {
+  address_id: Int!
+  address_line1: String!
+  address_line2: String
+  city: String!
+  state_province: String!
+  country_region: String!
+  postal_code: String!
+  rowguid: String!
+  created_date: String!
+}
+
+type AddressConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [Address!]!
+  edges: [AddressEdge!]!
+}
+
+type AddressEdge {
+  cursor: String!
+  node: Address!
+}
+
+input AddressFilterInput {
+  address_id: IntegerFilterInput
+  address_line1: StringFilterInput
+  address_line2: StringFilterInput
+  city: StringFilterInput
+  state_province: StringFilterInput
+  country_region: StringFilterInput
+  postal_code: StringFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [AddressFilterInput!]
+  or: [AddressFilterInput!]
+}
+
+input AddressInsertInput {
+  address_id: Int
+  address_line1: String!
+  address_line2: String
+  city: String!
+  state_province: String!
+  country_region: String!
+  postal_code: String!
+  rowguid: String!
+  created_date: String!
+}
+
+input AddressOrderInput {
+  address_id: OrderByEnum
+  address_line1: OrderByEnum
+  address_line2: OrderByEnum
+  city: OrderByEnum
+  state_province: OrderByEnum
+  country_region: OrderByEnum
+  postal_code: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+input AddressUpdateInput {
+  address_id: Int
+  address_line1: String
+  address_line2: String
+  city: String
+  state_province: String
+  country_region: String
+  postal_code: String
+  rowguid: String
+  created_date: String
+}
+
+input BooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+  gt: Boolean
+  gte: Boolean
+  lt: Boolean
+  lte: Boolean
+  is_in: [Boolean!]
+  is_not_in: [Boolean!]
+  is_null: Boolean
+  is_not_null: Boolean
+}
+
+input CursorInput {
+  cursor: String
+  limit: Int!
+}
+
+type Customer {
+  customer_id: Int!
+  name_style: Boolean!
+  title: String
+  first_name: String!
+  middle_name: String
+  last_name: String!
+  suffix: String
+  company_name: String
+  sales_person: String
+  email_address: String
+  phone: String
+  password_hash: String!
+  password_salt: String!
+  rowguid: String!
+  created_date: String!
+  customer_address(
+    filters: CustomerAddressFilterInput
+    order_by: CustomerAddressOrderInput
+    pagination: PaginationInput
+  ): CustomerAddressConnection!
+  sales_order_header(
+    filters: SalesOrderHeaderFilterInput
+    order_by: SalesOrderHeaderOrderInput
+    pagination: PaginationInput
+  ): SalesOrderHeaderConnection!
+  address(
+    filters: AddressFilterInput
+    order_by: AddressOrderInput
+    pagination: PaginationInput
+  ): AddressConnection!
+}
+
+type CustomerAddress {
+  customer_id: Int!
+  address_id: Int!
+  address_type: String!
+  rowguid: String!
+  created_date: String!
+  address: Address
+  customer: Customer
+}
+
+type CustomerAddressBasic {
+  customer_id: Int!
+  address_id: Int!
+  address_type: String!
+  rowguid: String!
+  created_date: String!
+}
+
+type CustomerAddressConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [CustomerAddress!]!
+  edges: [CustomerAddressEdge!]!
+}
+
+type CustomerAddressEdge {
+  cursor: String!
+  node: CustomerAddress!
+}
+
+input CustomerAddressFilterInput {
+  customer_id: IntegerFilterInput
+  address_id: IntegerFilterInput
+  address_type: StringFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [CustomerAddressFilterInput!]
+  or: [CustomerAddressFilterInput!]
+}
+
+input CustomerAddressInsertInput {
+  customer_id: Int!
+  address_id: Int!
+  address_type: String!
+  rowguid: String!
+  created_date: String!
+}
+
+input CustomerAddressOrderInput {
+  customer_id: OrderByEnum
+  address_id: OrderByEnum
+  address_type: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+input CustomerAddressUpdateInput {
+  customer_id: Int
+  address_id: Int
+  address_type: String
+  rowguid: String
+  created_date: String
+}
+
+type CustomerBasic {
+  customer_id: Int!
+  name_style: Boolean!
+  title: String
+  first_name: String!
+  middle_name: String
+  last_name: String!
+  suffix: String
+  company_name: String
+  sales_person: String
+  email_address: String
+  phone: String
+  password_hash: String!
+  password_salt: String!
+  rowguid: String!
+  created_date: String!
+}
+
+type CustomerConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [Customer!]!
+  edges: [CustomerEdge!]!
+}
+
+type CustomerEdge {
+  cursor: String!
+  node: Customer!
+}
+
+input CustomerFilterInput {
+  customer_id: IntegerFilterInput
+  name_style: BooleanFilterInput
+  title: StringFilterInput
+  first_name: StringFilterInput
+  middle_name: StringFilterInput
+  last_name: StringFilterInput
+  suffix: StringFilterInput
+  company_name: StringFilterInput
+  sales_person: StringFilterInput
+  email_address: StringFilterInput
+  phone: StringFilterInput
+  password_hash: StringFilterInput
+  password_salt: StringFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [CustomerFilterInput!]
+  or: [CustomerFilterInput!]
+}
+
+input CustomerInsertInput {
+  customer_id: Int
+  name_style: Boolean!
+  title: String
+  first_name: String!
+  middle_name: String
+  last_name: String!
+  suffix: String
+  company_name: String
+  sales_person: String
+  email_address: String
+  phone: String
+  password_hash: String!
+  password_salt: String!
+  rowguid: String!
+  created_date: String!
+}
+
+input CustomerOrderInput {
+  customer_id: OrderByEnum
+  name_style: OrderByEnum
+  title: OrderByEnum
+  first_name: OrderByEnum
+  middle_name: OrderByEnum
+  last_name: OrderByEnum
+  suffix: OrderByEnum
+  company_name: OrderByEnum
+  sales_person: OrderByEnum
+  email_address: OrderByEnum
+  phone: OrderByEnum
+  password_hash: OrderByEnum
+  password_salt: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+input CustomerUpdateInput {
+  customer_id: Int
+  name_style: Boolean
+  title: String
+  first_name: String
+  middle_name: String
+  last_name: String
+  suffix: String
+  company_name: String
+  sales_person: String
+  email_address: String
+  phone: String
+  password_hash: String
+  password_salt: String
+  rowguid: String
+  created_date: String
+}
+
+input FloatFilterInput {
+  eq: Float
+  ne: Float
+  gt: Float
+  gte: Float
+  lt: Float
+  lte: Float
+  is_in: [Float!]
+  is_not_in: [Float!]
+  is_null: Float
+  is_not_null: Float
+  between: [Float!]
+  not_between: [Float!]
+}
+
+input IntegerFilterInput {
+  eq: Int
+  ne: Int
+  gt: Int
+  gte: Int
+  lt: Int
+  lte: Int
+  is_in: [Int!]
+  is_not_in: [Int!]
+  is_null: Int
+  is_not_null: Int
+  between: [Int!]
+  not_between: [Int!]
+}
+
+type Mutation {
+  _ping: String
+  address_create_one(data: AddressInsertInput!): AddressBasic!
+  address_create_batch(data: [AddressInsertInput!]!): [AddressBasic!]!
+  address_update(
+    data: AddressUpdateInput!
+    filter: AddressFilterInput
+  ): [AddressBasic!]!
+  address_delete(filter: AddressFilterInput): Int!
+  customer_create_one(data: CustomerInsertInput!): CustomerBasic!
+  customer_create_batch(data: [CustomerInsertInput!]!): [CustomerBasic!]!
+  customer_update(
+    data: CustomerUpdateInput!
+    filter: CustomerFilterInput
+  ): [CustomerBasic!]!
+  customer_delete(filter: CustomerFilterInput): Int!
+  customer_address_create_one(
+    data: CustomerAddressInsertInput!
+  ): CustomerAddressBasic!
+  customer_address_create_batch(
+    data: [CustomerAddressInsertInput!]!
+  ): [CustomerAddressBasic!]!
+  customer_address_update(
+    data: CustomerAddressUpdateInput!
+    filter: CustomerAddressFilterInput
+  ): [CustomerAddressBasic!]!
+  customer_address_delete(filter: CustomerAddressFilterInput): Int!
+  product_create_one(data: ProductInsertInput!): ProductBasic!
+  product_create_batch(data: [ProductInsertInput!]!): [ProductBasic!]!
+  product_update(
+    data: ProductUpdateInput!
+    filter: ProductFilterInput
+  ): [ProductBasic!]!
+  product_delete(filter: ProductFilterInput): Int!
+  product_category_create_one(
+    data: ProductCategoryInsertInput!
+  ): ProductCategoryBasic!
+  product_category_create_batch(
+    data: [ProductCategoryInsertInput!]!
+  ): [ProductCategoryBasic!]!
+  product_category_update(
+    data: ProductCategoryUpdateInput!
+    filter: ProductCategoryFilterInput
+  ): [ProductCategoryBasic!]!
+  product_category_delete(filter: ProductCategoryFilterInput): Int!
+  product_description_create_one(
+    data: ProductDescriptionInsertInput!
+  ): ProductDescriptionBasic!
+  product_description_create_batch(
+    data: [ProductDescriptionInsertInput!]!
+  ): [ProductDescriptionBasic!]!
+  product_description_update(
+    data: ProductDescriptionUpdateInput!
+    filter: ProductDescriptionFilterInput
+  ): [ProductDescriptionBasic!]!
+  product_description_delete(filter: ProductDescriptionFilterInput): Int!
+  product_model_create_one(data: ProductModelInsertInput!): ProductModelBasic!
+  product_model_create_batch(
+    data: [ProductModelInsertInput!]!
+  ): [ProductModelBasic!]!
+  product_model_update(
+    data: ProductModelUpdateInput!
+    filter: ProductModelFilterInput
+  ): [ProductModelBasic!]!
+  product_model_delete(filter: ProductModelFilterInput): Int!
+  product_model_product_description_create_one(
+    data: ProductModelProductDescriptionInsertInput!
+  ): ProductModelProductDescriptionBasic!
+  product_model_product_description_create_batch(
+    data: [ProductModelProductDescriptionInsertInput!]!
+  ): [ProductModelProductDescriptionBasic!]!
+  product_model_product_description_update(
+    data: ProductModelProductDescriptionUpdateInput!
+    filter: ProductModelProductDescriptionFilterInput
+  ): [ProductModelProductDescriptionBasic!]!
+  product_model_product_description_delete(
+    filter: ProductModelProductDescriptionFilterInput
+  ): Int!
+  sales_order_detail_create_one(
+    data: SalesOrderDetailInsertInput!
+  ): SalesOrderDetailBasic!
+  sales_order_detail_create_batch(
+    data: [SalesOrderDetailInsertInput!]!
+  ): [SalesOrderDetailBasic!]!
+  sales_order_detail_update(
+    data: SalesOrderDetailUpdateInput!
+    filter: SalesOrderDetailFilterInput
+  ): [SalesOrderDetailBasic!]!
+  sales_order_detail_delete(filter: SalesOrderDetailFilterInput): Int!
+  sales_order_header_create_one(
+    data: SalesOrderHeaderInsertInput!
+  ): SalesOrderHeaderBasic!
+  sales_order_header_create_batch(
+    data: [SalesOrderHeaderInsertInput!]!
+  ): [SalesOrderHeaderBasic!]!
+  sales_order_header_update(
+    data: SalesOrderHeaderUpdateInput!
+    filter: SalesOrderHeaderFilterInput
+  ): [SalesOrderHeaderBasic!]!
+  sales_order_header_delete(filter: SalesOrderHeaderFilterInput): Int!
+}
+
+input OffsetInput {
+  limit: Int!
+  offset: Int!
+}
+
+enum OrderByEnum {
+  ASC
+  DESC
+}
+
+type PageInfo {
+  has_previous_page: Boolean!
+  has_next_page: Boolean!
+  start_cursor: String
+  end_cursor: String
+}
+
+input PageInput {
+  limit: Int!
+  page: Int!
+}
+
+type PaginationInfo {
+  pages: Int!
+  current: Int!
+  offset: Int!
+  total: Int!
+}
+
+input PaginationInput {
+  cursor: CursorInput
+  page: PageInput
+  offset: OffsetInput
+}
+
+type Product {
+  product_id: Int!
+  name: String!
+  product_number: String!
+  color: String
+  standard_cost: Float!
+  list_price: Float!
+  size: String
+  weight: String
+  product_category_id: Int
+  product_model_id: Int
+  sell_start_date: String!
+  sell_end_date: String
+  discontinued_date: String
+  thumb_nail_photo: String
+  thumbnail_photo_file_name: String
+  rowguid: String!
+  created_date: String!
+  product_category: ProductCategory
+  product_model: ProductModel
+  sales_order_detail(
+    filters: SalesOrderDetailFilterInput
+    order_by: SalesOrderDetailOrderInput
+    pagination: PaginationInput
+  ): SalesOrderDetailConnection!
+  sales_order_header(
+    filters: SalesOrderHeaderFilterInput
+    order_by: SalesOrderHeaderOrderInput
+    pagination: PaginationInput
+  ): SalesOrderHeaderConnection!
+}
+
+type ProductBasic {
+  product_id: Int!
+  name: String!
+  product_number: String!
+  color: String
+  standard_cost: Float!
+  list_price: Float!
+  size: String
+  weight: String
+  product_category_id: Int
+  product_model_id: Int
+  sell_start_date: String!
+  sell_end_date: String
+  discontinued_date: String
+  thumb_nail_photo: String
+  thumbnail_photo_file_name: String
+  rowguid: String!
+  created_date: String!
+}
+
+type ProductCategory {
+  product_category_id: Int!
+  parent_product_category_id: Int
+  name: String!
+  rowguid: String!
+  created_date: String!
+  product(
+    filters: ProductFilterInput
+    order_by: ProductOrderInput
+    pagination: PaginationInput
+  ): ProductConnection!
+  self_ref: ProductCategory
+  self_ref_reverse(
+    filters: ProductCategoryFilterInput
+    order_by: ProductCategoryOrderInput
+    pagination: PaginationInput
+  ): ProductCategoryConnection!
+}
+
+type ProductCategoryBasic {
+  product_category_id: Int!
+  parent_product_category_id: Int
+  name: String!
+  rowguid: String!
+  created_date: String!
+}
+
+type ProductCategoryConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [ProductCategory!]!
+  edges: [ProductCategoryEdge!]!
+}
+
+type ProductCategoryEdge {
+  cursor: String!
+  node: ProductCategory!
+}
+
+input ProductCategoryFilterInput {
+  product_category_id: IntegerFilterInput
+  parent_product_category_id: IntegerFilterInput
+  name: StringFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [ProductCategoryFilterInput!]
+  or: [ProductCategoryFilterInput!]
+}
+
+input ProductCategoryInsertInput {
+  product_category_id: Int
+  parent_product_category_id: Int
+  name: String!
+  rowguid: String!
+  created_date: String!
+}
+
+input ProductCategoryOrderInput {
+  product_category_id: OrderByEnum
+  parent_product_category_id: OrderByEnum
+  name: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+input ProductCategoryUpdateInput {
+  product_category_id: Int
+  parent_product_category_id: Int
+  name: String
+  rowguid: String
+  created_date: String
+}
+
+type ProductConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [Product!]!
+  edges: [ProductEdge!]!
+}
+
+type ProductDescription {
+  product_description_id: Int!
+  description: String!
+  rowguid: String!
+  created_date: String!
+  product_model_product_description(
+    filters: ProductModelProductDescriptionFilterInput
+    order_by: ProductModelProductDescriptionOrderInput
+    pagination: PaginationInput
+  ): ProductModelProductDescriptionConnection!
+}
+
+type ProductDescriptionBasic {
+  product_description_id: Int!
+  description: String!
+  rowguid: String!
+  created_date: String!
+}
+
+type ProductDescriptionConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [ProductDescription!]!
+  edges: [ProductDescriptionEdge!]!
+}
+
+type ProductDescriptionEdge {
+  cursor: String!
+  node: ProductDescription!
+}
+
+input ProductDescriptionFilterInput {
+  product_description_id: IntegerFilterInput
+  description: StringFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [ProductDescriptionFilterInput!]
+  or: [ProductDescriptionFilterInput!]
+}
+
+input ProductDescriptionInsertInput {
+  product_description_id: Int
+  description: String!
+  rowguid: String!
+  created_date: String!
+}
+
+input ProductDescriptionOrderInput {
+  product_description_id: OrderByEnum
+  description: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+input ProductDescriptionUpdateInput {
+  product_description_id: Int
+  description: String
+  rowguid: String
+  created_date: String
+}
+
+type ProductEdge {
+  cursor: String!
+  node: Product!
+}
+
+input ProductFilterInput {
+  product_id: IntegerFilterInput
+  name: StringFilterInput
+  product_number: StringFilterInput
+  color: StringFilterInput
+  standard_cost: FloatFilterInput
+  list_price: FloatFilterInput
+  size: StringFilterInput
+  weight: TextFilterInput
+  product_category_id: IntegerFilterInput
+  product_model_id: IntegerFilterInput
+  sell_start_date: TextFilterInput
+  sell_end_date: TextFilterInput
+  discontinued_date: TextFilterInput
+  thumb_nail_photo: StringFilterInput
+  thumbnail_photo_file_name: StringFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [ProductFilterInput!]
+  or: [ProductFilterInput!]
+}
+
+input ProductInsertInput {
+  product_id: Int
+  name: String!
+  product_number: String!
+  color: String
+  standard_cost: Float!
+  list_price: Float!
+  size: String
+  weight: String
+  product_category_id: Int
+  product_model_id: Int
+  sell_start_date: String!
+  sell_end_date: String
+  discontinued_date: String
+  thumb_nail_photo: String
+  thumbnail_photo_file_name: String
+  rowguid: String!
+  created_date: String!
+}
+
+type ProductModel {
+  product_model_id: Int!
+  name: String!
+  catalog_description: String
+  rowguid: String!
+  created_date: String!
+  product(
+    filters: ProductFilterInput
+    order_by: ProductOrderInput
+    pagination: PaginationInput
+  ): ProductConnection!
+  product_model_product_description(
+    filters: ProductModelProductDescriptionFilterInput
+    order_by: ProductModelProductDescriptionOrderInput
+    pagination: PaginationInput
+  ): ProductModelProductDescriptionConnection!
+  product_description(
+    filters: ProductDescriptionFilterInput
+    order_by: ProductDescriptionOrderInput
+    pagination: PaginationInput
+  ): ProductDescriptionConnection!
+}
+
+type ProductModelBasic {
+  product_model_id: Int!
+  name: String!
+  catalog_description: String
+  rowguid: String!
+  created_date: String!
+}
+
+type ProductModelConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [ProductModel!]!
+  edges: [ProductModelEdge!]!
+}
+
+type ProductModelEdge {
+  cursor: String!
+  node: ProductModel!
+}
+
+input ProductModelFilterInput {
+  product_model_id: IntegerFilterInput
+  name: StringFilterInput
+  catalog_description: StringFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [ProductModelFilterInput!]
+  or: [ProductModelFilterInput!]
+}
+
+input ProductModelInsertInput {
+  product_model_id: Int
+  name: String!
+  catalog_description: String
+  rowguid: String!
+  created_date: String!
+}
+
+input ProductModelOrderInput {
+  product_model_id: OrderByEnum
+  name: OrderByEnum
+  catalog_description: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+type ProductModelProductDescription {
+  product_model_id: Int!
+  product_description_id: Int!
+  culture: String!
+  rowguid: String!
+  created_date: String!
+  product_description: ProductDescription
+  product_model: ProductModel
+}
+
+type ProductModelProductDescriptionBasic {
+  product_model_id: Int!
+  product_description_id: Int!
+  culture: String!
+  rowguid: String!
+  created_date: String!
+}
+
+type ProductModelProductDescriptionConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [ProductModelProductDescription!]!
+  edges: [ProductModelProductDescriptionEdge!]!
+}
+
+type ProductModelProductDescriptionEdge {
+  cursor: String!
+  node: ProductModelProductDescription!
+}
+
+input ProductModelProductDescriptionFilterInput {
+  product_model_id: IntegerFilterInput
+  product_description_id: IntegerFilterInput
+  culture: StringFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [ProductModelProductDescriptionFilterInput!]
+  or: [ProductModelProductDescriptionFilterInput!]
+}
+
+input ProductModelProductDescriptionInsertInput {
+  product_model_id: Int!
+  product_description_id: Int!
+  culture: String!
+  rowguid: String!
+  created_date: String!
+}
+
+input ProductModelProductDescriptionOrderInput {
+  product_model_id: OrderByEnum
+  product_description_id: OrderByEnum
+  culture: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+input ProductModelProductDescriptionUpdateInput {
+  product_model_id: Int
+  product_description_id: Int
+  culture: String
+  rowguid: String
+  created_date: String
+}
+
+input ProductModelUpdateInput {
+  product_model_id: Int
+  name: String
+  catalog_description: String
+  rowguid: String
+  created_date: String
+}
+
+input ProductOrderInput {
+  product_id: OrderByEnum
+  name: OrderByEnum
+  product_number: OrderByEnum
+  color: OrderByEnum
+  standard_cost: OrderByEnum
+  list_price: OrderByEnum
+  size: OrderByEnum
+  weight: OrderByEnum
+  product_category_id: OrderByEnum
+  product_model_id: OrderByEnum
+  sell_start_date: OrderByEnum
+  sell_end_date: OrderByEnum
+  discontinued_date: OrderByEnum
+  thumb_nail_photo: OrderByEnum
+  thumbnail_photo_file_name: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+input ProductUpdateInput {
+  product_id: Int
+  name: String
+  product_number: String
+  color: String
+  standard_cost: Float
+  list_price: Float
+  size: String
+  weight: String
+  product_category_id: Int
+  product_model_id: Int
+  sell_start_date: String
+  sell_end_date: String
+  discontinued_date: String
+  thumb_nail_photo: String
+  thumbnail_photo_file_name: String
+  rowguid: String
+  created_date: String
+}
+
+type Query {
+  address(
+    filters: AddressFilterInput
+    order_by: AddressOrderInput
+    pagination: PaginationInput
+  ): AddressConnection!
+  customer(
+    filters: CustomerFilterInput
+    order_by: CustomerOrderInput
+    pagination: PaginationInput
+  ): CustomerConnection!
+  customer_address(
+    filters: CustomerAddressFilterInput
+    order_by: CustomerAddressOrderInput
+    pagination: PaginationInput
+  ): CustomerAddressConnection!
+  product(
+    filters: ProductFilterInput
+    order_by: ProductOrderInput
+    pagination: PaginationInput
+  ): ProductConnection!
+  product_category(
+    filters: ProductCategoryFilterInput
+    order_by: ProductCategoryOrderInput
+    pagination: PaginationInput
+  ): ProductCategoryConnection!
+  product_description(
+    filters: ProductDescriptionFilterInput
+    order_by: ProductDescriptionOrderInput
+    pagination: PaginationInput
+  ): ProductDescriptionConnection!
+  product_model(
+    filters: ProductModelFilterInput
+    order_by: ProductModelOrderInput
+    pagination: PaginationInput
+  ): ProductModelConnection!
+  product_model_product_description(
+    filters: ProductModelProductDescriptionFilterInput
+    order_by: ProductModelProductDescriptionOrderInput
+    pagination: PaginationInput
+  ): ProductModelProductDescriptionConnection!
+  sales_order_detail(
+    filters: SalesOrderDetailFilterInput
+    order_by: SalesOrderDetailOrderInput
+    pagination: PaginationInput
+  ): SalesOrderDetailConnection!
+  sales_order_header(
+    filters: SalesOrderHeaderFilterInput
+    order_by: SalesOrderHeaderOrderInput
+    pagination: PaginationInput
+  ): SalesOrderHeaderConnection!
+  _sea_orm_entity_metadata(table_name: String!): String
+}
+
+type SalesOrderDetail {
+  sales_order_id: Int!
+  sales_order_detail_id: Int!
+  order_qty: Int!
+  product_id: Int!
+  unit_price: Float!
+  unit_price_discount: Float!
+  rowguid: String!
+  created_date: String!
+  product: Product
+  sales_order_header: SalesOrderHeader
+}
+
+type SalesOrderDetailBasic {
+  sales_order_id: Int!
+  sales_order_detail_id: Int!
+  order_qty: Int!
+  product_id: Int!
+  unit_price: Float!
+  unit_price_discount: Float!
+  rowguid: String!
+  created_date: String!
+}
+
+type SalesOrderDetailConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [SalesOrderDetail!]!
+  edges: [SalesOrderDetailEdge!]!
+}
+
+type SalesOrderDetailEdge {
+  cursor: String!
+  node: SalesOrderDetail!
+}
+
+input SalesOrderDetailFilterInput {
+  sales_order_id: IntegerFilterInput
+  sales_order_detail_id: IntegerFilterInput
+  order_qty: IntegerFilterInput
+  product_id: IntegerFilterInput
+  unit_price: FloatFilterInput
+  unit_price_discount: FloatFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [SalesOrderDetailFilterInput!]
+  or: [SalesOrderDetailFilterInput!]
+}
+
+input SalesOrderDetailInsertInput {
+  sales_order_id: Int!
+  sales_order_detail_id: Int!
+  order_qty: Int!
+  product_id: Int!
+  unit_price: Float!
+  unit_price_discount: Float!
+  rowguid: String!
+  created_date: String!
+}
+
+input SalesOrderDetailOrderInput {
+  sales_order_id: OrderByEnum
+  sales_order_detail_id: OrderByEnum
+  order_qty: OrderByEnum
+  product_id: OrderByEnum
+  unit_price: OrderByEnum
+  unit_price_discount: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+input SalesOrderDetailUpdateInput {
+  sales_order_id: Int
+  sales_order_detail_id: Int
+  order_qty: Int
+  product_id: Int
+  unit_price: Float
+  unit_price_discount: Float
+  rowguid: String
+  created_date: String
+}
+
+type SalesOrderHeader {
+  sales_order_id: Int!
+  revision_number: Int!
+  order_date: String!
+  due_date: String!
+  ship_date: String
+  status: Int!
+  online_order_flag: Boolean!
+  purchase_order_number: String
+  account_number: String
+  customer_id: Int!
+  ship_to_address_id: Int
+  bill_to_address_id: Int
+  ship_method: String!
+  credit_card_approval_code: String
+  sub_total: Float!
+  tax_amt: Float!
+  freight: Float!
+  comment: String
+  rowguid: String!
+  created_date: String!
+  address2: Address
+  address1: Address
+  customer: Customer
+  sales_order_detail(
+    filters: SalesOrderDetailFilterInput
+    order_by: SalesOrderDetailOrderInput
+    pagination: PaginationInput
+  ): SalesOrderDetailConnection!
+  product(
+    filters: ProductFilterInput
+    order_by: ProductOrderInput
+    pagination: PaginationInput
+  ): ProductConnection!
+}
+
+type SalesOrderHeaderBasic {
+  sales_order_id: Int!
+  revision_number: Int!
+  order_date: String!
+  due_date: String!
+  ship_date: String
+  status: Int!
+  online_order_flag: Boolean!
+  purchase_order_number: String
+  account_number: String
+  customer_id: Int!
+  ship_to_address_id: Int
+  bill_to_address_id: Int
+  ship_method: String!
+  credit_card_approval_code: String
+  sub_total: Float!
+  tax_amt: Float!
+  freight: Float!
+  comment: String
+  rowguid: String!
+  created_date: String!
+}
+
+type SalesOrderHeaderConnection {
+  page_info: PageInfo!
+  pagination_info: PaginationInfo
+  nodes: [SalesOrderHeader!]!
+  edges: [SalesOrderHeaderEdge!]!
+}
+
+type SalesOrderHeaderEdge {
+  cursor: String!
+  node: SalesOrderHeader!
+}
+
+input SalesOrderHeaderFilterInput {
+  sales_order_id: IntegerFilterInput
+  revision_number: IntegerFilterInput
+  order_date: TextFilterInput
+  due_date: TextFilterInput
+  ship_date: TextFilterInput
+  status: IntegerFilterInput
+  online_order_flag: BooleanFilterInput
+  purchase_order_number: StringFilterInput
+  account_number: StringFilterInput
+  customer_id: IntegerFilterInput
+  ship_to_address_id: IntegerFilterInput
+  bill_to_address_id: IntegerFilterInput
+  ship_method: StringFilterInput
+  credit_card_approval_code: StringFilterInput
+  sub_total: FloatFilterInput
+  tax_amt: FloatFilterInput
+  freight: FloatFilterInput
+  comment: StringFilterInput
+  rowguid: TextFilterInput
+  created_date: TextFilterInput
+  and: [SalesOrderHeaderFilterInput!]
+  or: [SalesOrderHeaderFilterInput!]
+}
+
+input SalesOrderHeaderInsertInput {
+  sales_order_id: Int
+  revision_number: Int!
+  order_date: String!
+  due_date: String!
+  ship_date: String
+  status: Int!
+  online_order_flag: Boolean!
+  purchase_order_number: String
+  account_number: String
+  customer_id: Int!
+  ship_to_address_id: Int
+  bill_to_address_id: Int
+  ship_method: String!
+  credit_card_approval_code: String
+  sub_total: Float!
+  tax_amt: Float!
+  freight: Float!
+  comment: String
+  rowguid: String!
+  created_date: String!
+}
+
+input SalesOrderHeaderOrderInput {
+  sales_order_id: OrderByEnum
+  revision_number: OrderByEnum
+  order_date: OrderByEnum
+  due_date: OrderByEnum
+  ship_date: OrderByEnum
+  status: OrderByEnum
+  online_order_flag: OrderByEnum
+  purchase_order_number: OrderByEnum
+  account_number: OrderByEnum
+  customer_id: OrderByEnum
+  ship_to_address_id: OrderByEnum
+  bill_to_address_id: OrderByEnum
+  ship_method: OrderByEnum
+  credit_card_approval_code: OrderByEnum
+  sub_total: OrderByEnum
+  tax_amt: OrderByEnum
+  freight: OrderByEnum
+  comment: OrderByEnum
+  rowguid: OrderByEnum
+  created_date: OrderByEnum
+}
+
+input SalesOrderHeaderUpdateInput {
+  sales_order_id: Int
+  revision_number: Int
+  order_date: String
+  due_date: String
+  ship_date: String
+  status: Int
+  online_order_flag: Boolean
+  purchase_order_number: String
+  account_number: String
+  customer_id: Int
+  ship_to_address_id: Int
+  bill_to_address_id: Int
+  ship_method: String
+  credit_card_approval_code: String
+  sub_total: Float
+  tax_amt: Float
+  freight: Float
+  comment: String
+  rowguid: String
+  created_date: String
+}
+
+input StringFilterInput {
+  eq: String
+  ne: String
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  is_in: [String!]
+  is_not_in: [String!]
+  is_null: String
+  is_not_null: String
+  contains: String
+  starts_with: String
+  ends_with: String
+  like: String
+  not_like: String
+  between: [String!]
+  not_between: [String!]
+}
+
+input TextFilterInput {
+  eq: String
+  ne: String
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  is_in: [String!]
+  is_not_in: [String!]
+  is_null: String
+  is_not_null: String
+  between: [String!]
+  not_between: [String!]
+}
