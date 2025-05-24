@@ -40,19 +40,19 @@ export interface AuthBody {
      * @type {string}
      * @memberof AuthBody
      */
-    'pid'?: string;
+    'pid': string;
     /**
      * 
      * @type {string}
      * @memberof AuthBody
      */
-    'token'?: string;
+    'token': string;
     /**
      * 
      * @type {string}
      * @memberof AuthBody
      */
-    'name'?: string;
+    'name': string;
 }
 /**
  * 
@@ -84,19 +84,19 @@ export interface UserBody {
      * @type {string}
      * @memberof UserBody
      */
-    'pid'?: string;
+    'pid': string;
     /**
      * 
      * @type {string}
      * @memberof UserBody
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof UserBody
      */
-    'email'?: string;
+    'email': string;
 }
 
 /**
@@ -221,8 +221,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        view: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/users/current`;
+        profile: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/user/current`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -265,10 +265,10 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async view(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserBody>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.view(options);
+        async profile(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserBody>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.profile(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UsersApi.view']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.profile']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -287,8 +287,8 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        view(options?: RawAxiosRequestConfig): AxiosPromise<Array<UserBody>> {
-            return localVarFp.view(options).then((request) => request(axios, basePath));
+        profile(options?: RawAxiosRequestConfig): AxiosPromise<UserBody> {
+            return localVarFp.profile(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -307,8 +307,8 @@ export class UsersApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public view(options?: RawAxiosRequestConfig) {
-        return UsersApiFp(this.configuration).view(options).then((request) => request(this.axios, this.basePath));
+    public profile(options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).profile(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

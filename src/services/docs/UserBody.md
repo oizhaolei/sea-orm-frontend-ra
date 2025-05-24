@@ -5,9 +5,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**pid** | **string** |  | [optional] [default to undefined]
-**name** | **string** |  | [optional] [default to undefined]
-**email** | **string** |  | [optional] [default to undefined]
+**pid** | **string** |  | [default to undefined]
+**name** | **string** |  | [default to undefined]
+**email** | **string** |  | [default to undefined]
 
 ## Example
 

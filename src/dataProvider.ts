@@ -1,277 +1,397 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import { capitalize, omit } from "lodash";
+import { omit } from "lodash";
 import type { DataProvider } from "react-admin";
 
 const apiUrl = "http://localhost:8086/api/graphql";
 
+const accessToken = localStorage.getItem("token") || "";
 const client = new ApolloClient({
   uri: apiUrl,
   headers: {
-    "x-graphql-token":
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwaWQiOiJkZW1vQHNlYS1xbC5vcmciLCJleHAiOjE3NDg1MDIyNjUsImNsYWltcyI6bnVsbH0.7H_iib9FipoMtMUpnjk42eUwRbwR0ufR4rl1AcqadEY0eauxTdztS2zBkqDC-sRVkotr4M4wVO8mMiOEbBHZUQ",
-    Authorization:
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwaWQiOiJkZW1vQHNlYS1xbC5vcmciLCJleHAiOjE3NDg1MDIyNjUsImNsYWltcyI6bnVsbH0.7H_iib9FipoMtMUpnjk42eUwRbwR0ufR4rl1AcqadEY0eauxTdztS2zBkqDC-sRVkotr4M4wVO8mMiOEbBHZUQ",
+    Authorization: `Bearer ${accessToken}`,
   },
   cache: new InMemoryCache(),
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: "no-cache",
-      errorPolicy: "ignore",
-    },
-    query: {
-      fetchPolicy: "no-cache",
-      errorPolicy: "all",
-    },
-  },
 });
 
-const fields = {
-  posts: "id title body author_id created_at",
-  customer: `
-                id: customer_id
-                title
-                first_name
-                middle_name
-                last_name
-                name_style
-                suffix
-                company_name
-                sales_person
-                email_address
-                phone
-                rowguid
-                created_date
-`,
+const customerDataProvider: DataProvider = {
+  getList: async (_resource, { sort, pagination, filter, signal }) => {
+    const field = !sort || sort?.field === "id" ? "customer_id" : sort?.field;
+    const result = await client.query({
+      query: gql`
+        query customer_list(
+          $limit: Int!
+          $page: Int!
+          $order_by: CustomerOrderInput
+          $filters: CustomerFilterInput
+        ) {
+          customer(
+            filters: $filters
+            order_by: $order_by
+            pagination: { page: { limit: $limit, page: $page } }
+          ) {
+            nodes {
+              id: customer_id
+              title
+              first_name
+              middle_name
+              last_name
+              name_style
+              suffix
+              company_name
+              sales_person
+              email_address
+              phone
+              rowguid
+              created_date
+            }
+            pagination_info {
+              current
+              pages
+              offset
+              total
+            }
+          }
+        }
+      `,
+      variables: {
+        limit: pagination?.perPage,
+        page: (pagination?.page || 1) - 1,
+        order_by: { [field]: sort?.order },
+        filters: Object.keys(filter).reduce(
+          (prev, key) => ({
+            ...prev,
+            [key]: { _eq: filter[key] },
+          }),
+          {},
+        ),
+      },
+      context: {
+        fetchOptions: {
+          signal,
+        },
+      },
+    });
+    const res = result.data.customer;
+    return {
+      data: res.nodes,
+      total: res.pagination_info.total,
+    };
+  },
+  getOne: async (_resource, { id, signal }) => {
+    const result = await client.query({
+      query: gql`
+        query customer_one($filters: CustomerFilterInput) {
+          customer(filters: $filters) {
+            nodes {
+              id: customer_id
+              title
+              first_name
+              middle_name
+              last_name
+              name_style
+              suffix
+              company_name
+              sales_person
+              email_address
+              phone
+              rowguid
+              created_date
+            }
+          }
+        }
+      `,
+      variables: {
+        filters: {
+          customer_id: {
+            eq: id,
+          },
+        },
+      },
+      context: {
+        fetchOptions: {
+          signal,
+        },
+      },
+    });
+    return { data: result.data[`customer_by_pk`] };
+  },
+  getMany: async (_resource, { ids, signal }) => {
+    const result = await client.query({
+      query: gql`
+        query customer_many($filters: CustomerFilterInput) {
+          customer(filters: $filters) {
+            nodes {
+              id: customer_id
+              title
+              first_name
+              middle_name
+              last_name
+              name_style
+              suffix
+              company_name
+              sales_person
+              email_address
+              phone
+              rowguid
+              created_date
+            }
+          }
+        }
+      `,
+      variables: {
+        filters: {
+          customer_id: {
+            is_in: ids,
+          },
+        },
+      },
+      context: {
+        fetchOptions: {
+          signal,
+        },
+      },
+    });
+    return { data: result.data.customer };
+  },
+  getManyReference: async (_resource, { pagination, filter, signal }) => {
+    const { page = 1, perPage = 10 } = pagination;
+    const result = await client.query({
+      query: gql`
+        query customer_many_ref(
+          $limit: Int!
+          $page: Int!
+          $filters: CustomerFilterInput
+        ) {
+          customer(
+            filters: $filters
+            pagination: { page: { limit: $limit, page: $page } }
+          ) {
+            nodes {
+              id: customer_id
+              title
+              first_name
+              middle_name
+              last_name
+              name_style
+              suffix
+              company_name
+              sales_person
+              email_address
+              phone
+              rowguid
+              created_date
+            }
+            pagination_info {
+              current
+              pages
+              offset
+              total
+            }
+          }
+        }
+      `,
+      variables: {
+        limit: perPage,
+        page: page - 1,
+        filters: Object.keys(filter).reduce(
+          (prev, key) => ({
+            ...prev,
+            [key]: { _eq: filter[key] },
+          }),
+          {},
+        ),
+      },
+      context: {
+        fetchOptions: {
+          signal,
+        },
+      },
+    });
+    const res = result.data.customer;
+    return {
+      data: res.nodes,
+      total: res.pagination_info.total,
+    };
+  },
+  create: async (_resource, params) => {
+    const result = await client.mutate({
+      mutation: gql`
+        mutation mutation_customer_create_one($data: CustomerInsertInput!) {
+          customer_create_one(data: $data) {
+            id: customer_id
+            title
+            first_name
+            middle_name
+            last_name
+            name_style
+            suffix
+            company_name
+            sales_person
+            email_address
+            phone
+            rowguid
+            created_date
+          }
+        }
+      `,
+      variables: {
+        data: omit(params.data, ["__typename"]),
+      },
+    });
+    return {
+      data: result.data[`insert_customer_one`],
+    };
+  },
+  update: async (_resource, { id, data }) => {
+    const result = await client.mutate({
+      mutation: gql`
+        mutation mutation_customer_update(
+          $data: CustomerUpdateInput!
+          $filter: CustomerFilterInput
+        ) {
+          customer_update(data: $data, filter: $filter) {
+            id: customer_id
+            title
+            first_name
+            middle_name
+            last_name
+            name_style
+            suffix
+            company_name
+            sales_person
+            email_address
+            phone
+            rowguid
+            created_date
+          }
+        }
+      `,
+      variables: {
+        data: data,
+        filter: {
+          customer_id: {
+            eq: id,
+          },
+        },
+      },
+    });
+    return {
+      data: result.data[`update_customer_by_pk`],
+    };
+  },
+  updateMany: async (_resource, { ids, data }) => {
+    const result = await client.mutate({
+      mutation: gql`
+        mutation mutation_customer_update(
+          $data: CustomerUpdateInput!
+          $filter: CustomerFilterInput
+        ) {
+          customer_update(data: $data, filter: $filter) {
+            id: customer_id
+            title
+            first_name
+            middle_name
+            last_name
+            name_style
+            suffix
+            company_name
+            sales_person
+            email_address
+            phone
+            rowguid
+            created_date
+          }
+        }
+      `,
+      variables: {
+        data,
+        filter: {
+          customer_id: {
+            is_in: ids,
+          },
+        },
+      },
+    });
+    console.log("result:", result);
+
+    return {
+      data: ids,
+    };
+  },
+  delete: async (_resource, { id }) => {
+    const result = await client.mutate({
+      mutation: gql`
+        mutation mutation_customer_delete($filter: CustomerFilterInput) {
+          customer_delete(filter: $filter)
+        }
+      `,
+      variables: {
+        filter: {
+          customer_id: {
+            eq: id,
+          },
+        },
+      },
+    });
+    return {
+      data: result.data[`delete_customer_by_pk`],
+    };
+  },
+  deleteMany: async (_resource, { ids }) => {
+    const result = await client.mutate({
+      mutation: gql`
+        mutation mutation_customer_delete($filter: CustomerFilterInput) {
+          customer_delete(filter: $filter)
+        }
+      `,
+      variables: {
+        filter: {
+          customer_id: {
+            is_in: ids,
+          },
+        },
+      },
+    });
+    console.log("result:", result);
+    return {
+      data: ids,
+    };
+  },
+};
+
+const getDataProvider = (resource: string) => {
+  if (resource === "customer") {
+    return customerDataProvider;
+  }
+  throw new Error(`invalid resource: ${resource}`);
 };
 
 export const dataProvider: DataProvider = {
-  getList: (resource, { sort, pagination, filter, signal }) => {
-    const { field: _field, order } = sort;
-    const field = _field === "id" ? "customer_id" : _field;
-    console.log("sort:", sort);
-    const { page, perPage } = pagination;
-    console.log("pagination:", pagination);
-    return client
-      .query({
-        query: gql`
-          query ($limit: Int, $page: Int, $order_by: [ ${capitalize(resource)}OrderInput! ], $filters: ${capitalize(resource)}FilterInput) {
-            ${resource}(
-              filters: $filters
-              order_by: $order_by
-              pagination: { page: { limit: $limit, page: $page } }
-            ) {
-              nodes {
-                ${fields[resource]}
-              }
-              pagination_info {
-                current
-                pages
-                offset
-                total
-              }
-            }
-          }
-        `,
-        variables: {
-          limit: perPage,
-          page: page - 1,
-          order_by: { [field]: order },
-          filters: Object.keys(filter).reduce(
-            (prev, key) => ({
-              ...prev,
-              [key]: { _eq: filter[key] },
-            }),
-            {},
-          ),
-        },
-        context: {
-          fetchOptions: {
-            signal,
-          },
-        },
-      })
-      .then((result) => {
-        const res = result.data[resource];
-        console.log("res:", res);
-        return {
-          data: res.nodes,
-          total: res.pagination_info.total,
-        };
-      });
-  },
-  getOne: (resource, params) => {
-    return client
-      .query({
-        query: gql`
-            query ($id: Int!) {
-                ${resource}_by_pk(id: $id) {
-                    ${fields[resource]}
-                }
-            }`,
-        variables: {
-          id: params.id,
-        },
-        context: {
-          fetchOptions: {
-            signal: params.signal,
-          },
-        },
-      })
-      .then((result) => ({ data: result.data[`${resource}_by_pk`] }));
-  },
-  getMany: (resource, params) => {
-    return client
-      .query({
-        query: gql`
-            query ($where: ${resource}_bool_exp) {
-                ${resource}(where: $where) {
-                    ${fields[resource]}
-                }
-            }`,
-        variables: {
-          where: {
-            id: { _in: params.ids },
-          },
-        },
-        context: {
-          fetchOptions: {
-            signal: params.signal,
-          },
-        },
-      })
-      .then((result) => ({ data: result.data[resource] }));
-  },
-  getManyReference: (
-    resource,
-    { target, id, sort, pagination, filter, signal },
-  ) => {
-    const { field, order } = sort;
-    const { page, perPage } = pagination;
-    return client
-      .query({
-        query: gql`
-            query ($limit: Int, $offset: Int, $order_by: [${resource}_order_by!], $where: ${resource}_bool_exp) {
-                ${resource}(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
-                    ${fields[resource]}
-                }
-                ${resource}_aggregate(where: $where) {
-                    aggregate {
-                        count
-                    }
-                }
-            }`,
-        variables: {
-          limit: perPage,
-          offset: (page - 1) * perPage,
-          order_by: { [field]: order.toLowerCase() },
-          where: Object.keys(filter).reduce(
-            (prev, key) => ({
-              ...prev,
-              [key]: { _eq: filter[key] },
-            }),
-            { [target]: { _eq: id } },
-          ),
-        },
-        context: {
-          fetchOptions: {
-            signal,
-          },
-        },
-      })
-      .then((result) => ({
-        data: result.data[resource],
-        total: result.data[`${resource}_aggregate`].aggregate.count,
-      }));
-  },
-  create: (resource, params) => {
-    return client
-      .mutate({
-        mutation: gql`
-            mutation ($data: ${resource}_insert_input!) {
-                insert_${resource}_one(object: $data) {
-                    ${fields[resource]}
-                }
-            }`,
-        variables: {
-          data: omit(params.data, ["__typename"]),
-        },
-      })
-      .then((result) => ({
-        data: result.data[`insert_${resource}_one`],
-      }));
-  },
-  update: (resource, params) => {
-    return client
-      .mutate({
-        mutation: gql`
-            mutation ($id: Int!, $data: ${resource}_set_input!) {
-                update_${resource}_by_pk(pk_columns: { id: $id }, _set: $data) {
-                    ${fields[resource]}
-                }
-            }`,
-        variables: {
-          id: params.id,
-          data: omit(params.data, ["__typename"]),
-        },
-      })
-      .then((result) => ({
-        data: result.data[`update_${resource}_by_pk`],
-      }));
-  },
-  updateMany: (resource, params) => {
-    return client
-      .mutate({
-        mutation: gql`
-            mutation ($where: ${resource}_bool_exp!, $data: ${resource}_set_input!) {
-                update_${resource}(where: $where, _set: $data) {
-                    affected_rows
-                }
-            }`,
-        variables: {
-          where: {
-            id: { _in: params.ids },
-          },
-          data: omit(params.data, ["__typename"]),
-        },
-      })
-      .then((result) => ({
-        data: params.ids,
-      }));
-  },
-  delete: (resource, params) => {
-    return client
-      .mutate({
-        mutation: gql`
-            mutation ($id: Int!) {
-                delete_${resource}_by_pk(id: $id) {
-                    ${fields[resource]}
-                }
-            }`,
-        variables: {
-          id: params.id,
-        },
-      })
-      .then((result) => ({
-        data: result.data[`delete_${resource}_by_pk`],
-      }));
-  },
-  deleteMany: (resource, params) => {
-    return client
-      .mutate({
-        mutation: gql`
-            mutation ($where: ${resource}_bool_exp!) {
-                delete_${resource}(where: $where) {
-                    affected_rows
-                }
-            }`,
-        variables: {
-          where: {
-            id: { _in: params.ids },
-          },
-        },
-      })
-      .then((result) => ({
-        data: params.ids,
-      }));
-  },
+  // get a list of records based on sort, filter, and pagination
+  getList: (resource, params) =>
+    getDataProvider(resource).getList(resource, params),
+  // get a single record by id
+  getOne: (resource, params) =>
+    getDataProvider(resource).getOne(resource, params),
+  // get a list of records based on an array of ids
+  getMany: (resource, params) =>
+    getDataProvider(resource).getMany(resource, params),
+  // get the records referenced to another record, e.g. comments for a post
+  getManyReference: (resource, params) =>
+    getDataProvider(resource).getManyReference(resource, params),
+  // create a record
+  create: (resource, params) =>
+    getDataProvider(resource).create(resource, params),
+  // update a record based on a patch
+  update: (resource, params) =>
+    getDataProvider(resource).update(resource, params),
+  // update a list of records based on an array of ids and a common patch
+  updateMany: (resource, params) =>
+    getDataProvider(resource).updateMany(resource, params),
+  // delete a record by id
+  delete: (resource, params) =>
+    getDataProvider(resource).delete(resource, params),
+  // delete a list of records based on an array of ids
+  deleteMany: (resource, params) =>
+    getDataProvider(resource).deleteMany(resource, params),
 };

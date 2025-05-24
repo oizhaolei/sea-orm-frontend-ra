@@ -4,10 +4,10 @@ All URIs are relative to *http://localhost:8086*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**view**](#view) | **GET** /api/users/current | Get single User by username|
+|[**profile**](#profile) | **GET** /api/user/current | Get single User by username|
 
-# **view**
-> Array<UserBody> view()
+# **profile**
+> UserBody profile()
 
 Tries to get single user by username from the database
 
@@ -22,7 +22,7 @@ import {
 const configuration = new Configuration();
 const apiInstance = new UsersApi(configuration);
 
-const { status, data } = await apiInstance.view();
+const { status, data } = await apiInstance.profile();
 ```
 
 ### Parameters
@@ -31,7 +31,7 @@ This endpoint does not have any parameters.
 
 ### Return type
 
-**Array<UserBody>**
+**UserBody**
 
 ### Authorization
 

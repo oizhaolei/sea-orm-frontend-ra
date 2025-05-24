@@ -36,20 +36,19 @@
         }
       }
     },
-    "/api/users/current": {
+    "/api/user/current": {
       "get": {
         "tags": ["Users"],
         "summary": "Get single User by username",
         "description": "Tries to get single user by username from the database",
-        "operationId": "view",
+        "operationId": "profile",
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/UserBody" }
+                  "$ref": "#/components/schemas/UserBody"
                 }
               }
             }
@@ -63,7 +62,7 @@
     "schemas": {
       "AuthBody": {
         "type": "object",
-        "required": ["access_token", "token_type"],
+        "required": ["pid", "name", "token"],
         "properties": {
           "is_verified": { "type": "boolean" },
           "pid": { "type": "string" },
@@ -73,6 +72,7 @@
       },
       "UserBody": {
         "type": "object",
+        "required": ["pid", "email", "name"],
         "properties": {
           "pid": { "type": "string" },
           "name": { "type": "string" },
