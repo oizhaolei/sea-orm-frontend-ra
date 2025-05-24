@@ -11,7 +11,8 @@ const AdminApp = () => (
     dataProvider={dataProvider}
     layout={MyLayout}
   >
-    <Resource name="customer" list={ListGuesser} />
+    <Resource name="customers" list={ListGuesser} />
+    <Resource name="products" list={ListGuesser} />
   </Admin>
 );
 
