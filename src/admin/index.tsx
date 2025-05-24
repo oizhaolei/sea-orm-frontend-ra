@@ -12,6 +12,7 @@ const AdminApp = () => (
     layout={MyLayout}
   >
     <Resource name="customers" list={ListGuesser} />
+    <Resource name="addresses" list={ListGuesser} />
     <Resource name="products" list={ListGuesser} />
   </Admin>
 );
