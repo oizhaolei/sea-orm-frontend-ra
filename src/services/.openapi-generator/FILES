@@ -1,0 +1,14 @@
+.gitignore
+.npmignore
+.openapi-generator-ignore
+api.ts
+base.ts
+common.ts
+configuration.ts
+docs/AuthApi.md
+docs/AuthBody.md
+docs/UserAuth.md
+docs/UserBody.md
+docs/UsersApi.md
+git_push.sh
+index.ts

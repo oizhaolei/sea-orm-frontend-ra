@@ -1,8 +1,11 @@
 import type { AuthProvider } from "react-admin";
+import { AuthApiFactory } from "./services";
 
 const authProvider: AuthProvider = {
-  login: ({ username }) => {
-    localStorage.setItem("username", username);
+  login: async ({ username: email, password }) => {
+    const res = await AuthApiFactory().login({ email, password });
+    console.log("res:", res);
+    localStorage.setItem("username", email);
     // accept all username/password combinations
     return Promise.resolve();
   },
