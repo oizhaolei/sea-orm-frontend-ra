@@ -5,20 +5,29 @@ const authProvider: AuthProvider = {
   login: async ({ username: email, password }) => {
     const { data } = await AuthApiFactory().login({ email, password });
     localStorage.setItem("username", data.name || "");
-    localStorage.setItem("token", data.token || "");
+    localStorage.setItem("access_token", data.token || "");
     // accept all username/password combinations
   },
   logout: () => {
     localStorage.removeItem("username");
-    localStorage.removeItem("token");
+    localStorage.removeItem("access_token");
     return Promise.resolve();
   },
-  checkError: () => Promise.resolve(),
-  checkAuth: () =>
-    localStorage.getItem("token") ? Promise.resolve() : Promise.reject(),
+  async checkError({ status }: { status: number }) {
+    if (status === 401 || status === 403) {
+      localStorage.removeItem("username");
+      throw new Error("Session expired");
+    }
+  },
+  // called when the user navigates to a new location, to check for authentication
+  async checkAuth() {
+    if (!localStorage.getItem("access_token")) {
+      throw new Error("Authentication required");
+    }
+  },
   getPermissions: () => Promise.resolve(),
   getIdentity: async () => {
-    const accessToken = localStorage.getItem("token") || "";
+    const accessToken = localStorage.getItem("access_token") || "";
     const { data } = await UsersApiFactory(
       new Configuration({
         accessToken,

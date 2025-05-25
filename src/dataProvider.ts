@@ -4,7 +4,7 @@ import type { DataProvider } from "react-admin";
 
 const apiUrl = "http://localhost:8086/api/graphql";
 
-const accessToken = localStorage.getItem("token") || "";
+const accessToken = localStorage.getItem("access_token") || "";
 const client = new ApolloClient({
   uri: apiUrl,
   headers: {
@@ -101,7 +101,7 @@ const customerDataProvider: DataProvider = {
       variables: {
         filters: {
           customer_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -111,7 +111,7 @@ const customerDataProvider: DataProvider = {
         },
       },
     });
-    return { data: result.data.customer_id };
+    return { data: result.data.customer.nodes[0] };
   },
   getMany: async (_resource, { ids, signal }) => {
     const result = await client.query({
@@ -264,7 +264,7 @@ const customerDataProvider: DataProvider = {
         data: data,
         filter: {
           customer_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -321,7 +321,7 @@ const customerDataProvider: DataProvider = {
       variables: {
         filter: {
           customer_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -434,7 +434,7 @@ const addressDataProvider: DataProvider = {
       variables: {
         filters: {
           address_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -444,7 +444,7 @@ const addressDataProvider: DataProvider = {
         },
       },
     });
-    return { data: result.data.address_id };
+    return { data: result.data.address.nodes[0] };
   },
   getMany: async (_resource, { ids, signal }) => {
     const result = await client.query({
@@ -592,7 +592,7 @@ const addressDataProvider: DataProvider = {
         data: data,
         filter: {
           address_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -646,7 +646,7 @@ const addressDataProvider: DataProvider = {
       variables: {
         filter: {
           address_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -773,7 +773,7 @@ const productDataProvider: DataProvider = {
       variables: {
         filters: {
           product_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -783,7 +783,7 @@ const productDataProvider: DataProvider = {
         },
       },
     });
-    return { data: result.data.product_id };
+    return { data: result.data.product.nodes[0] };
   },
   getMany: async (_resource, { ids, signal }) => {
     const result = await client.query({
@@ -952,7 +952,7 @@ const productDataProvider: DataProvider = {
         data: data,
         filter: {
           product_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -1013,7 +1013,7 @@ const productDataProvider: DataProvider = {
       variables: {
         filter: {
           product_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -1119,7 +1119,7 @@ const productModelDataProvider: DataProvider = {
       variables: {
         filters: {
           product_model_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -1129,7 +1129,7 @@ const productModelDataProvider: DataProvider = {
         },
       },
     });
-    return { data: result.data.product_model_id };
+    return { data: result.data.product_model.nodes[0] };
   },
   getMany: async (_resource, { ids, signal }) => {
     const result = await client.query({
@@ -1254,7 +1254,7 @@ const productModelDataProvider: DataProvider = {
         data: data,
         filter: {
           product_model_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -1306,7 +1306,7 @@ const productModelDataProvider: DataProvider = {
       variables: {
         filter: {
           product_model_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -1414,7 +1414,7 @@ const productCategoryDataProvider: DataProvider = {
       variables: {
         filters: {
           product_category_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -1424,7 +1424,7 @@ const productCategoryDataProvider: DataProvider = {
         },
       },
     });
-    return { data: result.data.product_category_id };
+    return { data: result.data.product_category.nodes[0] };
   },
   getMany: async (_resource, { ids, signal }) => {
     const result = await client.query({
@@ -1551,7 +1551,7 @@ const productCategoryDataProvider: DataProvider = {
         data: data,
         filter: {
           product_category_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },
@@ -1603,7 +1603,7 @@ const productCategoryDataProvider: DataProvider = {
       variables: {
         filter: {
           product_category_id: {
-            eq: id,
+            eq: parseInt(id.toString(), 10),
           },
         },
       },

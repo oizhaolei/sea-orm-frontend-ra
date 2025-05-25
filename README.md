@@ -2,6 +2,8 @@
 
 This project is an open-source frontend template for [SeaORM Pro](https://github.com/SeaQL/sea-orm-pro), inspired by the closed-source SeaORM Pro Plus. It provides a ready-to-use [React Admin](https://marmelab.com/react-admin/) interface for managing your SeaORM Pro backend.
 
+![Dashboard](docs/demo_dashboard.png)
+
 SeaORM Pro exposes two types of APIs:
 - **RESTful**
 - **GraphQL**
@@ -46,3 +48,9 @@ Open [http://localhost:8085/](http://localhost:8085) in your browser and log in 
 ![Login](docs/demo_login.png)
 ![Customer List](docs/demo_customer_list.png)
 ![Address List](docs/demo_address_list.png)
+
+## TODO
+
+- [ ] Dashboard
+- [ ] Viewer for CRUD
+- [ ] Customize `sea-orm-pro`
