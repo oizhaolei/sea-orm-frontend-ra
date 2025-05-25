@@ -1,6 +1,10 @@
 import type { AuthProvider } from "react-admin";
 import { AuthApiFactory, Configuration, UsersApiFactory } from "./services";
 
+const accessToken = () => {
+  return localStorage.getItem("access_token") || "";
+};
+
 const authProvider: AuthProvider = {
   login: async ({ username: email, password }) => {
     const { data } = await AuthApiFactory().login({ email, password });
@@ -27,13 +31,11 @@ const authProvider: AuthProvider = {
   },
   getPermissions: () => Promise.resolve(),
   getIdentity: async () => {
-    const accessToken = localStorage.getItem("access_token") || "";
     const { data } = await UsersApiFactory(
       new Configuration({
-        accessToken,
+        accessToken: accessToken(),
       }),
     ).profile();
-    console.log("data:", data);
     return {
       id: data.pid,
       fullName: data.name,

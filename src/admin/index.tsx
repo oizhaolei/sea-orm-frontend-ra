@@ -1,14 +1,20 @@
 // in src/admin/index.tsx
-import { Admin, Resource, ListGuesser, ShowGuesser } from "react-admin";
+import {
+  Admin,
+  Resource,
+  ListGuesser,
+  ShowGuesser,
+  EditGuesser,
+} from "react-admin";
 import PostIcon from "@mui/icons-material/Book";
 import UserIcon from "@mui/icons-material/Group";
 import AbcIcon from "@mui/icons-material/Abc";
 
-/* import jsonServerProvider from "ra-data-json-server"; */
 import { MyLayout } from "./MyLayout";
 import { dataProvider } from "../dataProvider";
 import authProvider from "../authProvider";
 import { Dashboard } from "../Dashboard";
+import { AddressEdit, AddressList, AddressShow } from "./Address";
 
 const AdminApp = () => (
   <Admin
@@ -21,18 +27,21 @@ const AdminApp = () => (
       name="customers"
       list={ListGuesser}
       show={ShowGuesser}
+      edit={EditGuesser}
       icon={UserIcon}
     />
     <Resource
       name="addresses"
-      list={ListGuesser}
-      show={ShowGuesser}
+      list={AddressList}
+      show={AddressShow}
+      edit={AddressEdit}
       icon={PostIcon}
     />
     <Resource
       name="products"
       list={ListGuesser}
       show={ShowGuesser}
+      edit={EditGuesser}
       icon={AbcIcon}
     />
   </Admin>

@@ -4,13 +4,25 @@ import type { DataProvider } from "react-admin";
 
 const apiUrl = "http://localhost:8086/api/graphql";
 
-const accessToken = localStorage.getItem("access_token") || "";
+const accessToken = () => {
+  return localStorage.getItem("access_token") || "";
+};
 const client = new ApolloClient({
   uri: apiUrl,
   headers: {
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${accessToken()}`,
   },
   cache: new InMemoryCache(),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: "no-cache",
+      errorPolicy: "ignore",
+    },
+    query: {
+      fetchPolicy: "no-cache",
+      errorPolicy: "all",
+    },
+  },
 });
 
 const customerDataProvider: DataProvider = {
@@ -261,7 +273,7 @@ const customerDataProvider: DataProvider = {
         }
       `,
       variables: {
-        data: data,
+        data: omit(data, ["id", "customer_id", "__typename"]),
         filter: {
           customer_id: {
             eq: parseInt(id.toString(), 10),
@@ -270,7 +282,7 @@ const customerDataProvider: DataProvider = {
       },
     });
     return {
-      data: result.data.customer_id,
+      data: result.data.customer_update[0],
     };
   },
   updateMany: async (_resource, { ids, data }) => {
@@ -308,7 +320,7 @@ const customerDataProvider: DataProvider = {
     console.log("result:", result);
 
     return {
-      data: ids,
+      data: result.data.customer_update,
     };
   },
   delete: async (_resource, { id }) => {
@@ -589,7 +601,7 @@ const addressDataProvider: DataProvider = {
         }
       `,
       variables: {
-        data: data,
+        data: omit(data, ["id", "address_id", "__typename"]),
         filter: {
           address_id: {
             eq: parseInt(id.toString(), 10),
@@ -598,7 +610,7 @@ const addressDataProvider: DataProvider = {
       },
     });
     return {
-      data: result.data.address_id,
+      data: result.data.address_update[0],
     };
   },
   updateMany: async (_resource, { ids, data }) => {
@@ -633,7 +645,7 @@ const addressDataProvider: DataProvider = {
     console.log("result:", result);
 
     return {
-      data: ids,
+      data: result.data.address_update,
     };
   },
   delete: async (_resource, { id }) => {
@@ -949,7 +961,7 @@ const productDataProvider: DataProvider = {
         }
       `,
       variables: {
-        data: data,
+        data: omit(data, ["id", "product_id", "__typename"]),
         filter: {
           product_id: {
             eq: parseInt(id.toString(), 10),
@@ -958,7 +970,7 @@ const productDataProvider: DataProvider = {
       },
     });
     return {
-      data: result.data.product_id,
+      data: result.data.product_update[0],
     };
   },
   updateMany: async (_resource, { ids, data }) => {
@@ -1000,7 +1012,7 @@ const productDataProvider: DataProvider = {
     console.log("result:", result);
 
     return {
-      data: ids,
+      data: result.data.product_update,
     };
   },
   delete: async (_resource, { id }) => {
@@ -1251,7 +1263,7 @@ const productModelDataProvider: DataProvider = {
         }
       `,
       variables: {
-        data: data,
+        data: omit(data, ["id", "product_model_id", "__typename"]),
         filter: {
           product_model_id: {
             eq: parseInt(id.toString(), 10),
@@ -1260,7 +1272,7 @@ const productModelDataProvider: DataProvider = {
       },
     });
     return {
-      data: result.data.product_model_id,
+      data: result.data.product_model_update[0],
     };
   },
   updateMany: async (_resource, { ids, data }) => {
@@ -1291,7 +1303,7 @@ const productModelDataProvider: DataProvider = {
     console.log("result:", result);
 
     return {
-      data: ids,
+      data: result.data.product_model_update,
     };
   },
   delete: async (_resource, { id }) => {
@@ -1548,7 +1560,7 @@ const productCategoryDataProvider: DataProvider = {
         }
       `,
       variables: {
-        data: data,
+        data: omit(data, ["id", "product_category_id", "__typename"]),
         filter: {
           product_category_id: {
             eq: parseInt(id.toString(), 10),
@@ -1557,7 +1569,7 @@ const productCategoryDataProvider: DataProvider = {
       },
     });
     return {
-      data: result.data.product_category_id,
+      data: result.data.product_category_update[0],
     };
   },
   updateMany: async (_resource, { ids, data }) => {
@@ -1588,7 +1600,7 @@ const productCategoryDataProvider: DataProvider = {
     console.log("result:", result);
 
     return {
-      data: ids,
+      data: result.data.product_category_update,
     };
   },
   delete: async (_resource, { id }) => {
