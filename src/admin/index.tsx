@@ -1,20 +1,31 @@
 // in src/admin/index.tsx
-import {
-  Admin,
-  Resource,
-  ListGuesser,
-  ShowGuesser,
-  EditGuesser,
-} from "react-admin";
+import { Admin, Resource } from "react-admin";
 import PostIcon from "@mui/icons-material/Book";
 import UserIcon from "@mui/icons-material/Group";
 import AbcIcon from "@mui/icons-material/Abc";
 
 import { MyLayout } from "./MyLayout";
-import { dataProvider } from "../dataProvider";
+import { dataProvider } from "../dataProvider/index";
 import authProvider from "../authProvider";
 import { Dashboard } from "../Dashboard";
-import { AddressEdit, AddressList, AddressShow } from "./Address";
+import {
+  AddressCreate,
+  AddressEdit,
+  AddressList,
+  AddressShow,
+} from "./Address";
+import {
+  ProductCreate,
+  ProductEdit,
+  ProductList,
+  ProductShow,
+} from "./Product";
+import {
+  CustomerCreate,
+  CustomerEdit,
+  CustomerList,
+  CustomerShow,
+} from "./Customer";
 
 const AdminApp = () => (
   <Admin
@@ -25,23 +36,26 @@ const AdminApp = () => (
   >
     <Resource
       name="customers"
-      list={ListGuesser}
-      show={ShowGuesser}
-      edit={EditGuesser}
+      list={CustomerList}
+      show={CustomerShow}
+      create={CustomerCreate}
+      edit={CustomerEdit}
       icon={UserIcon}
     />
     <Resource
       name="addresses"
       list={AddressList}
       show={AddressShow}
+      create={AddressCreate}
       edit={AddressEdit}
       icon={PostIcon}
     />
     <Resource
       name="products"
-      list={ListGuesser}
-      show={ShowGuesser}
-      edit={EditGuesser}
+      list={ProductList}
+      show={ProductShow}
+      create={ProductCreate}
+      edit={ProductEdit}
       icon={AbcIcon}
     />
   </Admin>
