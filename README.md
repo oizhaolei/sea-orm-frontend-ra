@@ -52,5 +52,5 @@ Open [http://localhost:8085/](http://localhost:8085) in your browser and log in 
 ## TODO
 
 - [ ] Dashboard
-- [ ] Viewer for CRUD
+- [x] Viewer for CRUD
 - [ ] Customize `sea-orm-pro`

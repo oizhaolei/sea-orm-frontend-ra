@@ -252,7 +252,7 @@ export const productCategoryDataProvider: DataProvider = {
     console.log("result:", result);
 
     return {
-      data: result.data.product_category_update,
+      data: ids,
     };
   },
   delete: async (_resource, { id }) => {
@@ -273,7 +273,7 @@ export const productCategoryDataProvider: DataProvider = {
       },
     });
     return {
-      data: result.data.product_category_id,
+      data: result.data,
     };
   },
   deleteMany: async (_resource, { ids }) => {

@@ -250,7 +250,7 @@ export const productModelDataProvider: DataProvider = {
     console.log("result:", result);
 
     return {
-      data: result.data.product_model_update,
+      data: ids,
     };
   },
   delete: async (_resource, { id }) => {
@@ -271,7 +271,7 @@ export const productModelDataProvider: DataProvider = {
       },
     });
     return {
-      data: result.data.product_model_id,
+      data: result.data,
     };
   },
   deleteMany: async (_resource, { ids }) => {

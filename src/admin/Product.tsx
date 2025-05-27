@@ -74,7 +74,7 @@ const defaultValues = () => ({
 });
 export const ProductCreate = () => (
   <Create>
-    <SimpleForm>
+    <SimpleForm defaultValues={defaultValues()}>
       <TextInput source="id" />
       <TextInput source="name" />
       <TextInput source="product_number" />

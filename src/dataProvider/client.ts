@@ -5,6 +5,7 @@ const apiUrl = "http://localhost:8086/api/graphql";
 const accessToken = () => {
   return localStorage.getItem("access_token") || "";
 };
+//FIXME: refresh after login succeed
 export const client = new ApolloClient({
   uri: apiUrl,
   headers: {

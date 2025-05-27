@@ -7,19 +7,21 @@ const accessToken = () => {
 
 const authProvider: AuthProvider = {
   login: async ({ username: email, password }) => {
-    const { data } = await AuthApiFactory().login({ email, password });
-    localStorage.setItem("username", data.name || "");
-    localStorage.setItem("access_token", data.token || "");
-    // accept all username/password combinations
+    const { status, data } = await AuthApiFactory().login({ email, password });
+
+    if (200 <= status && status < 300 && data.token) {
+      localStorage.setItem("access_token", data.token);
+    } else {
+      throw new Error("Login failed.");
+    }
   },
   logout: () => {
-    localStorage.removeItem("username");
     localStorage.removeItem("access_token");
     return Promise.resolve();
   },
   async checkError({ status }: { status: number }) {
     if (status === 401 || status === 403) {
-      localStorage.removeItem("username");
+      localStorage.removeItem("access_token");
       throw new Error("Session expired");
     }
   },

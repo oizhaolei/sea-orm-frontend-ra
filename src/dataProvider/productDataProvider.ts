@@ -326,7 +326,7 @@ export const productDataProvider: DataProvider = {
     console.log("result:", result);
 
     return {
-      data: result.data.product_update,
+      data: ids,
     };
   },
   delete: async (_resource, { id }) => {
@@ -345,7 +345,7 @@ export const productDataProvider: DataProvider = {
       },
     });
     return {
-      data: result.data.product_id,
+      data: result.data,
     };
   },
   deleteMany: async (_resource, { ids }) => {
