@@ -57,6 +57,50 @@ export interface AuthBody {
 /**
  * 
  * @export
+ * @interface DashboardBody
+ */
+export interface DashboardBody {
+    /**
+     * 
+     * @type {string}
+     * @memberof DashboardBody
+     */
+    'graph': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DashboardBody
+     */
+    'from'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DashboardBody
+     */
+    'to'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface DashboardDatum
+ */
+export interface DashboardDatum {
+    /**
+     * 
+     * @type {string}
+     * @memberof DashboardDatum
+     */
+    'key': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DashboardDatum
+     */
+    'val': string;
+}
+/**
+ * 
+ * @export
  * @interface UserAuth
  */
 export interface UserAuth {
@@ -98,6 +142,120 @@ export interface UserBody {
      */
     'email': string;
 }
+
+/**
+ * AdminsApi - axios parameter creator
+ * @export
+ */
+export const AdminsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Graph data for dashboard
+         * @summary Graph data for dashboard
+         * @param {DashboardBody} dashboardBody dashboard
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dashboard: async (dashboardBody: DashboardBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'dashboardBody' is not null or undefined
+            assertParamExists('dashboard', 'dashboardBody', dashboardBody)
+            const localVarPath = `/api/admin/dashboard`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(dashboardBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AdminsApi - functional programming interface
+ * @export
+ */
+export const AdminsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AdminsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Graph data for dashboard
+         * @summary Graph data for dashboard
+         * @param {DashboardBody} dashboardBody dashboard
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dashboard(dashboardBody: DashboardBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DashboardDatum>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dashboard(dashboardBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AdminsApi.dashboard']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * AdminsApi - factory interface
+ * @export
+ */
+export const AdminsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AdminsApiFp(configuration)
+    return {
+        /**
+         * Graph data for dashboard
+         * @summary Graph data for dashboard
+         * @param {DashboardBody} dashboardBody dashboard
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dashboard(dashboardBody: DashboardBody, options?: RawAxiosRequestConfig): AxiosPromise<Array<DashboardDatum>> {
+            return localVarFp.dashboard(dashboardBody, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * AdminsApi - object-oriented interface
+ * @export
+ * @class AdminsApi
+ * @extends {BaseAPI}
+ */
+export class AdminsApi extends BaseAPI {
+    /**
+     * Graph data for dashboard
+     * @summary Graph data for dashboard
+     * @param {DashboardBody} dashboardBody dashboard
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminsApi
+     */
+    public dashboard(dashboardBody: DashboardBody, options?: RawAxiosRequestConfig) {
+        return AdminsApiFp(this.configuration).dashboard(dashboardBody, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
 
 /**
  * AuthApi - axios parameter creator

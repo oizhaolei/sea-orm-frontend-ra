@@ -4,9 +4,12 @@ import { addressDataProvider } from "./addressDataProvider";
 import { productDataProvider } from "./productDataProvider";
 import { productModelDataProvider } from "./productModelDataProvider";
 import { productCategoryDataProvider } from "./productCategoryDataProvider";
+import { dashboardDataProvider } from "./dashboardDataProvider";
 
 export const dataProvider = combineDataProviders((resource) => {
-  if (resource === "customers") {
+  if (resource === "dashboard") {
+    return dashboardDataProvider;
+  } else if (resource === "customers") {
     return customerDataProvider;
   } else if (resource === "addresses") {
     return addressDataProvider;

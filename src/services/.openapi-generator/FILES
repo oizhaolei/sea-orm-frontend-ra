@@ -4,8 +4,11 @@ api.ts
 base.ts
 common.ts
 configuration.ts
+docs/AdminsApi.md
 docs/AuthApi.md
 docs/AuthBody.md
+docs/DashboardBody.md
+docs/DashboardDatum.md
 docs/UserAuth.md
 docs/UserBody.md
 docs/UsersApi.md

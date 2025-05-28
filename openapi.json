@@ -36,6 +36,39 @@
         }
       }
     },
+    "/api/admin/dashboard": {
+      "post": {
+        "tags": ["Admins"],
+        "summary": "Graph data for dashboard",
+        "description": "Graph data for dashboard",
+        "operationId": "dashboard",
+        "requestBody": {
+          "description": "dashboard",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DashboardBody" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Retrieve graph data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DashboardDatum"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/user/current": {
       "get": {
         "tags": ["Users"],
@@ -68,6 +101,23 @@
           "pid": { "type": "string" },
           "token": { "type": "string" },
           "name": { "type": "string" }
+        }
+      },
+      "DashboardBody": {
+        "type": "object",
+        "required": ["graph"],
+        "properties": {
+          "graph": { "type": "string" },
+          "from": { "type": "string" },
+          "to": { "type": "string" }
+        }
+      },
+      "DashboardDatum": {
+        "type": "object",
+        "required": ["key", "val"],
+        "properties": {
+          "key": { "type": "string" },
+          "val": { "type": "string" }
         }
       },
       "UserBody": {
