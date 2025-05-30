@@ -7,7 +7,7 @@ All URIs are relative to *http://localhost:8086*
 |[**profile**](#profile) | **GET** /api/user/current | Get single User by username|
 
 # **profile**
-> UserBody profile()
+> CurrentResponse profile()
 
 Tries to get single user by username from the database
 
@@ -31,7 +31,7 @@ This endpoint does not have any parameters.
 
 ### Return type
 
-**UserBody**
+**CurrentResponse**
 
 ### Authorization
 

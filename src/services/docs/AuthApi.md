@@ -4,12 +4,12 @@ All URIs are relative to *http://localhost:8086*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**login**](#login) | **POST** /api/auth/login | Login with email and password|
+|[**login**](#login) | **POST** /api/auth/login | Login|
 
 # **login**
-> AuthBody login(userAuth)
+> LoginResponse login(passwordLoginParams)
 
-Tries to login via a User in the database.
+Try to login via a User in the database.
 
 ### Example
 
@@ -17,16 +17,16 @@ Tries to login via a User in the database.
 import {
     AuthApi,
     Configuration,
-    UserAuth
+    PasswordLoginParams
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new AuthApi(configuration);
 
-let userAuth: UserAuth; //login
+let passwordLoginParams: PasswordLoginParams; //login
 
 const { status, data } = await apiInstance.login(
-    userAuth
+    passwordLoginParams
 );
 ```
 
@@ -34,12 +34,12 @@ const { status, data } = await apiInstance.login(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **userAuth** | **UserAuth**| login | |
+| **passwordLoginParams** | **PasswordLoginParams**| login | |
 
 
 ### Return type
 
-**AuthBody**
+**LoginResponse**
 
 ### Authorization
 

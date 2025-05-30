@@ -26,33 +26,33 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
- * @interface AuthBody
+ * @interface CurrentResponse
  */
-export interface AuthBody {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AuthBody
-     */
-    'is_verified'?: boolean;
+export interface CurrentResponse {
     /**
      * 
      * @type {string}
-     * @memberof AuthBody
+     * @memberof CurrentResponse
      */
     'pid': string;
     /**
      * 
      * @type {string}
-     * @memberof AuthBody
+     * @memberof CurrentResponse
      */
-    'token': string;
+    'name': string;
     /**
      * 
      * @type {string}
-     * @memberof AuthBody
+     * @memberof CurrentResponse
      */
-    'name': string;
+    'email': string;
+    /**
+     * 
+     * @type {Array<Permission>}
+     * @memberof CurrentResponse
+     */
+    'permissions': Array<Permission>;
 }
 /**
  * 
@@ -101,46 +101,77 @@ export interface DashboardDatum {
 /**
  * 
  * @export
- * @interface UserAuth
+ * @interface LoginResponse
  */
-export interface UserAuth {
+export interface LoginResponse {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof LoginResponse
+     */
+    'is_verified'?: boolean;
     /**
      * 
      * @type {string}
-     * @memberof UserAuth
+     * @memberof LoginResponse
+     */
+    'pid': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginResponse
+     */
+    'token': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginResponse
+     */
+    'name': string;
+}
+/**
+ * 
+ * @export
+ * @interface PasswordLoginParams
+ */
+export interface PasswordLoginParams {
+    /**
+     * 
+     * @type {string}
+     * @memberof PasswordLoginParams
      */
     'password': string;
     /**
      * 
      * @type {string}
-     * @memberof UserAuth
+     * @memberof PasswordLoginParams
      */
     'email': string;
 }
 /**
  * 
  * @export
- * @interface UserBody
+ * @interface Permission
  */
-export interface UserBody {
+export interface Permission {
     /**
      * 
      * @type {string}
-     * @memberof UserBody
-     */
-    'pid': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserBody
+     * @memberof Permission
      */
     'name': string;
     /**
      * 
      * @type {string}
-     * @memberof UserBody
+     * @memberof Permission
      */
-    'email': string;
+    'resource': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Permission
+     */
+    'permission': string;
 }
 
 /**
@@ -264,15 +295,15 @@ export class AdminsApi extends BaseAPI {
 export const AuthApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Tries to login via a User in the database.
-         * @summary Login with email and password
-         * @param {UserAuth} userAuth login
+         * Try to login via a User in the database.
+         * @summary Login
+         * @param {PasswordLoginParams} passwordLoginParams login
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        login: async (userAuth: UserAuth, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'userAuth' is not null or undefined
-            assertParamExists('login', 'userAuth', userAuth)
+        login: async (passwordLoginParams: PasswordLoginParams, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'passwordLoginParams' is not null or undefined
+            assertParamExists('login', 'passwordLoginParams', passwordLoginParams)
             const localVarPath = `/api/auth/login`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -292,7 +323,7 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userAuth, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(passwordLoginParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -310,14 +341,14 @@ export const AuthApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = AuthApiAxiosParamCreator(configuration)
     return {
         /**
-         * Tries to login via a User in the database.
-         * @summary Login with email and password
-         * @param {UserAuth} userAuth login
+         * Try to login via a User in the database.
+         * @summary Login
+         * @param {PasswordLoginParams} passwordLoginParams login
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async login(userAuth: UserAuth, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthBody>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.login(userAuth, options);
+        async login(passwordLoginParams: PasswordLoginParams, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.login(passwordLoginParams, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AuthApi.login']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -333,14 +364,14 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
     const localVarFp = AuthApiFp(configuration)
     return {
         /**
-         * Tries to login via a User in the database.
-         * @summary Login with email and password
-         * @param {UserAuth} userAuth login
+         * Try to login via a User in the database.
+         * @summary Login
+         * @param {PasswordLoginParams} passwordLoginParams login
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        login(userAuth: UserAuth, options?: RawAxiosRequestConfig): AxiosPromise<AuthBody> {
-            return localVarFp.login(userAuth, options).then((request) => request(axios, basePath));
+        login(passwordLoginParams: PasswordLoginParams, options?: RawAxiosRequestConfig): AxiosPromise<LoginResponse> {
+            return localVarFp.login(passwordLoginParams, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -353,15 +384,15 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
  */
 export class AuthApi extends BaseAPI {
     /**
-     * Tries to login via a User in the database.
-     * @summary Login with email and password
-     * @param {UserAuth} userAuth login
+     * Try to login via a User in the database.
+     * @summary Login
+     * @param {PasswordLoginParams} passwordLoginParams login
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi
      */
-    public login(userAuth: UserAuth, options?: RawAxiosRequestConfig) {
-        return AuthApiFp(this.configuration).login(userAuth, options).then((request) => request(this.axios, this.basePath));
+    public login(passwordLoginParams: PasswordLoginParams, options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).login(passwordLoginParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -423,7 +454,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async profile(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserBody>> {
+        async profile(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.profile(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UsersApi.profile']?.[localVarOperationServerIndex]?.url;
@@ -445,7 +476,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        profile(options?: RawAxiosRequestConfig): AxiosPromise<UserBody> {
+        profile(options?: RawAxiosRequestConfig): AxiosPromise<CurrentResponse> {
             return localVarFp.profile(options).then((request) => request(axios, basePath));
         },
     };

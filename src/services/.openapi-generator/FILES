@@ -6,11 +6,12 @@ common.ts
 configuration.ts
 docs/AdminsApi.md
 docs/AuthApi.md
-docs/AuthBody.md
+docs/CurrentResponse.md
 docs/DashboardBody.md
 docs/DashboardDatum.md
-docs/UserAuth.md
-docs/UserBody.md
+docs/LoginResponse.md
+docs/PasswordLoginParams.md
+docs/Permission.md
 docs/UsersApi.md
 git_push.sh
 index.ts

@@ -53,4 +53,7 @@ Open [http://localhost:8085/](http://localhost:8085) in your browser and log in 
 
 - [x] Dashboard
 - [x] Viewer for CRUD
-- [x] Customize `sea-orm-pro`
+- Customize `sea-orm-pro`
+  - [x] RBAC
+  - [x] utoipa
+

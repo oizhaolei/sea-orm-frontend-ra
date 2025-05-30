@@ -12,14 +12,14 @@
     "/api/auth/login": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Login with email and password",
-        "description": "Tries to login via a User in the database.",
+        "summary": "Login",
+        "description": "Try to login via a User in the database.",
         "operationId": "login",
         "requestBody": {
           "description": "login",
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/UserAuth" }
+              "schema": { "$ref": "#/components/schemas/PasswordLoginParams" }
             }
           },
           "required": true
@@ -29,7 +29,7 @@
             "description": "User login successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/AuthBody" }
+                "schema": { "$ref": "#/components/schemas/LoginResponse" }
               }
             }
           }
@@ -81,7 +81,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserBody"
+                  "$ref": "#/components/schemas/CurrentResponse"
                 }
               }
             }
@@ -93,7 +93,15 @@
   },
   "components": {
     "schemas": {
-      "AuthBody": {
+      "PasswordLoginParams": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "password": { "type": "string" },
+          "email": { "type": "string" }
+        }
+      },
+      "LoginResponse": {
         "type": "object",
         "required": ["pid", "name", "token"],
         "properties": {
@@ -120,21 +128,28 @@
           "val": { "type": "string" }
         }
       },
-      "UserBody": {
+      "Permission": {
         "type": "object",
-        "required": ["pid", "email", "name"],
+        "required": ["name", "resource", "permission"],
+        "properties": {
+          "name": { "type": "string" },
+          "resource": { "type": "string" },
+          "permission": { "type": "string" }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "required": ["pid", "email", "name", "permissions"],
         "properties": {
           "pid": { "type": "string" },
           "name": { "type": "string" },
-          "email": { "type": "string" }
-        }
-      },
-      "UserAuth": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "password": { "type": "string" },
-          "email": { "type": "string" }
+          "email": { "type": "string" },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            }
+          }
         }
       }
     },

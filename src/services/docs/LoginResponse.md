@@ -1,4 +1,4 @@
-# AuthBody
+# LoginResponse
 
 
 ## Properties
@@ -13,9 +13,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { AuthBody } from './api';
+import { LoginResponse } from './api';
 
-const instance: AuthBody = {
+const instance: LoginResponse = {
     is_verified,
     pid,
     token,

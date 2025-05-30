@@ -16,6 +16,7 @@ const authProvider: AuthProvider = {
     }
   },
   logout: () => {
+    // FIXME call `/api/auth/logout`
     localStorage.removeItem("access_token");
     return Promise.resolve();
   },

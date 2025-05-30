@@ -1,4 +1,4 @@
-# UserAuth
+# PasswordLoginParams
 
 
 ## Properties
@@ -11,9 +11,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { UserAuth } from './api';
+import { PasswordLoginParams } from './api';
 
-const instance: UserAuth = {
+const instance: PasswordLoginParams = {
     password,
     email,
 };

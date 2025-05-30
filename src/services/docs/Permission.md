@@ -1,23 +1,23 @@
-# UserBody
+# Permission
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**pid** | **string** |  | [default to undefined]
 **name** | **string** |  | [default to undefined]
-**email** | **string** |  | [default to undefined]
+**resource** | **string** |  | [default to undefined]
+**permission** | **string** |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { UserBody } from './api';
+import { Permission } from './api';
 
-const instance: UserBody = {
-    pid,
+const instance: Permission = {
     name,
-    email,
+    resource,
+    permission,
 };
 ```
 
