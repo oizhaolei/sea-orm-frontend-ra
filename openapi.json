@@ -134,7 +134,7 @@
         "properties": {
           "name": { "type": "string" },
           "resource": { "type": "string" },
-          "permission": { "type": "string" }
+          "action": { "type": "string" }
         }
       },
       "CurrentResponse": {

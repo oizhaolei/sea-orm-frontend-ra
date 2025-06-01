@@ -2,7 +2,7 @@ import { type DataProvider } from "react-admin";
 import { AdminsApiFactory, Configuration } from "../services";
 
 const accessToken = () => {
-  return localStorage.getItem("access_token") || "";
+  return localStorage.getItem("jwt_token") || "";
 };
 
 export const dashboardDataProvider: DataProvider = {

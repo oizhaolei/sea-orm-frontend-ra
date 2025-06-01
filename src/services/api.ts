@@ -171,7 +171,7 @@ export interface Permission {
      * @type {string}
      * @memberof Permission
      */
-    'permission': string;
+    'action'?: string;
 }
 
 /**

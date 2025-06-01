@@ -5,6 +5,7 @@ This project is an open-source frontend template for [SeaORM Pro](https://github
 ![Dashboard](docs/demo_dashboard.png)
 
 SeaORM Pro exposes two types of APIs:
+
 - **RESTful**
 - **GraphQL**
 
@@ -40,7 +41,7 @@ yarn dev
 
 Open [http://localhost:8085/](http://localhost:8085) in your browser and log in with:
 
-- **Email:** demo@sea-ql.org  
+- **Email:** demo@sea-ql.org
 - **Password:** demo@sea-ql.org
 
 ## Screenshots
@@ -56,4 +57,4 @@ Open [http://localhost:8085/](http://localhost:8085) in your browser and log in 
 - Customize `sea-orm-pro`
   - [x] RBAC
   - [x] utoipa
-
+- [ ] Permission

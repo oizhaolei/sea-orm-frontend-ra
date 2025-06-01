@@ -1,16 +1,27 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
 const apiUrl = "http://localhost:8086/api/graphql";
 
-const accessToken = () => {
-  return localStorage.getItem("access_token") || "";
-};
-//FIXME: refresh after login succeed
+const httpLink = createHttpLink({
+  uri: apiUrl,
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem("access_token");
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
 export const client = new ApolloClient({
   uri: apiUrl,
-  headers: {
-    Authorization: `Bearer ${accessToken()}`,
-  },
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {

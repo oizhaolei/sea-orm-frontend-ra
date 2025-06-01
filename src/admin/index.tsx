@@ -7,7 +7,7 @@ import AbcIcon from "@mui/icons-material/Abc";
 import { MyLayout } from "./MyLayout";
 import { dataProvider } from "../dataProvider/index";
 import authProvider from "../authProvider";
-import { Dashboard } from "../Dashboard";
+import { Dashboard } from "./Dashboard";
 import {
   AddressCreate,
   AddressEdit,

@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **string** |  | [default to undefined]
 **resource** | **string** |  | [default to undefined]
-**permission** | **string** |  | [default to undefined]
+**action** | **string** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -17,7 +17,7 @@ import { Permission } from './api';
 const instance: Permission = {
     name,
     resource,
-    permission,
+    action,
 };
 ```
 
