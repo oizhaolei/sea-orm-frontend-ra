@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **string** |  | [default to undefined]
-**resource** | **string** |  | [default to undefined]
+**subject** | **string** |  | [default to undefined]
+**object** | **string** |  | [default to undefined]
 **action** | **string** |  | [optional] [default to undefined]
 
 ## Example
@@ -15,8 +15,8 @@ Name | Type | Description | Notes
 import { Permission } from './api';
 
 const instance: Permission = {
-    name,
-    resource,
+    subject,
+    object,
     action,
 };
 ```

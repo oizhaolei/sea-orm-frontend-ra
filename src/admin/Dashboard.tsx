@@ -17,7 +17,7 @@ export const Dashboard = () => {
       <Card>
         <CardHeader title="Welcome to the administration" />
         <CardContent style={{ width: 500, height: 300 }}>
-          <SalesValueByDay data={sales_value_by_day} />
+          <SalesValueByDay data={sales_value_by_day || []} />
         </CardContent>
       </Card>
     </div>

@@ -3,6 +3,24 @@ import { omit } from "lodash";
 import { type DataProvider } from "react-admin";
 import { client } from "./client";
 
+const fields = `
+  id: product_id
+  name
+  product_number
+  color
+  standard_cost
+  list_price
+  size
+  weight
+  product_category_id
+  product_model_id
+  sell_start_date
+  sell_end_date
+  discontinued_date
+  thumb_nail_photo
+  thumbnail_photo_file_name
+  created_date
+`;
 export const productDataProvider: DataProvider = {
   getList: async (_resource, { sort, pagination, filter, signal }) => {
     const field = !sort || sort?.field === "id" ? "product_id" : sort?.field;
@@ -20,22 +38,7 @@ export const productDataProvider: DataProvider = {
             pagination: { page: { limit: $limit, page: $page } }
           ) {
             nodes {
-              id: product_id
-              name
-              product_number
-              color
-              standard_cost
-              list_price
-              size
-              weight
-              product_category_id
-              product_model_id
-              sell_start_date
-              sell_end_date
-              discontinued_date
-              thumb_nail_photo
-              thumbnail_photo_file_name
-              created_date
+              ${fields}
             }
             pagination_info {
               current
@@ -76,22 +79,7 @@ export const productDataProvider: DataProvider = {
         query product_one($filters: ProductFilterInput) {
           product(filters: $filters) {
             nodes {
-              id: product_id
-              name
-              product_number
-              color
-              standard_cost
-              list_price
-              size
-              weight
-              product_category_id
-              product_model_id
-              sell_start_date
-              sell_end_date
-              discontinued_date
-              thumb_nail_photo
-              thumbnail_photo_file_name
-              created_date
+              ${fields}
             }
           }
         }
@@ -117,22 +105,7 @@ export const productDataProvider: DataProvider = {
         query product_many($filters: ProductFilterInput) {
           product(filters: $filters) {
             nodes {
-              id: product_id
-              name
-              product_number
-              color
-              standard_cost
-              list_price
-              size
-              weight
-              product_category_id
-              product_model_id
-              sell_start_date
-              sell_end_date
-              discontinued_date
-              thumb_nail_photo
-              thumbnail_photo_file_name
-              created_date
+              ${fields}
             }
           }
         }
@@ -166,22 +139,7 @@ export const productDataProvider: DataProvider = {
             pagination: { page: { limit: $limit, page: $page } }
           ) {
             nodes {
-              id: product_id
-              name
-              product_number
-              color
-              standard_cost
-              list_price
-              size
-              weight
-              product_category_id
-              product_model_id
-              sell_start_date
-              sell_end_date
-              discontinued_date
-              thumb_nail_photo
-              thumbnail_photo_file_name
-              created_date
+              ${fields}
             }
             pagination_info {
               current
@@ -220,22 +178,7 @@ export const productDataProvider: DataProvider = {
       mutation: gql`
         mutation mutation_product_create_one($data: ProductInsertInput!) {
           product_create_one(data: $data) {
-            id: product_id
-            name
-            product_number
-            color
-            standard_cost
-            list_price
-            size
-            weight
-            product_category_id
-            product_model_id
-            sell_start_date
-            sell_end_date
-            discontinued_date
-            thumb_nail_photo
-            thumbnail_photo_file_name
-            created_date
+              ${fields}
           }
         }
       `,
@@ -255,22 +198,7 @@ export const productDataProvider: DataProvider = {
           $filter: ProductFilterInput
         ) {
           product_update(data: $data, filter: $filter) {
-            id: product_id
-            name
-            product_number
-            color
-            standard_cost
-            list_price
-            size
-            weight
-            product_category_id
-            product_model_id
-            sell_start_date
-            sell_end_date
-            discontinued_date
-            thumb_nail_photo
-            thumbnail_photo_file_name
-            created_date
+              ${fields}
           }
         }
       `,
@@ -295,22 +223,7 @@ export const productDataProvider: DataProvider = {
           $filter: ProductFilterInput
         ) {
           product_update(data: $data, filter: $filter) {
-            id: product_id
-            name
-            product_number
-            color
-            standard_cost
-            list_price
-            size
-            weight
-            product_category_id
-            product_model_id
-            sell_start_date
-            sell_end_date
-            discontinued_date
-            thumb_nail_photo
-            thumbnail_photo_file_name
-            created_date
+              ${fields}
           }
         }
       `,

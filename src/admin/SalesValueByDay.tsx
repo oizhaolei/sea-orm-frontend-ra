@@ -8,7 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import type { DashboardDatum } from "./services";
+import type { DashboardDatum } from "../services";
 
 export const SalesValueByDay = ({ data }: { data: DashboardDatum[] }) => {
   return (

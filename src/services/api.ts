@@ -159,13 +159,13 @@ export interface Permission {
      * @type {string}
      * @memberof Permission
      */
-    'name': string;
+    'subject': string;
     /**
      * 
      * @type {string}
      * @memberof Permission
      */
-    'resource': string;
+    'object': string;
     /**
      * 
      * @type {string}

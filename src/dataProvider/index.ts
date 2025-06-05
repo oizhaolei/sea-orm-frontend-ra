@@ -1,10 +1,12 @@
 import { combineDataProviders } from "react-admin";
-import { customerDataProvider } from "./customerDataProvider";
-import { addressDataProvider } from "./addressDataProvider";
-import { productDataProvider } from "./productDataProvider";
-import { productModelDataProvider } from "./productModelDataProvider";
-import { productCategoryDataProvider } from "./productCategoryDataProvider";
-import { dashboardDataProvider } from "./dashboardDataProvider";
+import { customerDataProvider } from "./customer";
+import { addressDataProvider } from "./address";
+import { productDataProvider } from "./product";
+import { productModelDataProvider } from "./product_model";
+import { productCategoryDataProvider } from "./product_category";
+import { dashboardDataProvider } from "./dashboard";
+import { userDataProvider } from "./user";
+import { casbinRuleDataProvider } from "./casbin_rule";
 
 export const dataProvider = combineDataProviders((resource) => {
   if (resource === "dashboard") {
@@ -19,6 +21,10 @@ export const dataProvider = combineDataProviders((resource) => {
     return productModelDataProvider;
   } else if (resource === "product_categories") {
     return productCategoryDataProvider;
+  } else if (resource === "users") {
+    return userDataProvider;
+  } else if (resource === "casbin_rule") {
+    return casbinRuleDataProvider;
   }
   throw new Error(`invalid resource: ${resource}`);
 });

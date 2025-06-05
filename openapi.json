@@ -130,10 +130,10 @@
       },
       "Permission": {
         "type": "object",
-        "required": ["name", "resource", "permission"],
+        "required": ["subject", "object", "permission"],
         "properties": {
-          "name": { "type": "string" },
-          "resource": { "type": "string" },
+          "subject": { "type": "string" },
+          "object": { "type": "string" },
           "action": { "type": "string" }
         }
       },
